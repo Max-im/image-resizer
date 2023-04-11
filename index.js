@@ -1,48 +1,67 @@
-const Jimp = require("jimp");
+const Jimp = require('jimp');
 const fs = require('fs');
 
 const process = async (fileName) => {
-    return new Promise((resolve, reject) => {
-        Jimp.read(`./src/${fileName}`, (err, file) => {
-            if (err) reject(err);
-            else {
-                file.quality(60).write(`./dist/${fileName}`);
-                resolve();
-            }
-        });
+  return new Promise((resolve, reject) => {
+    Jimp.read(fileName, (err, file) => {
+      if (err) reject(err);
+      else {
+        file.quality(60).write(fileName.replace('./src/', './dist/'));
+        resolve();
+      }
     });
-}
+  });
+};
 
-(async function() {
-    const files = fs.readdirSync('./src');
-
-    const results = {success: [], errors: []}
-    
-    let i = 0;
+const readDirFiles = (path) => {
+  if (!fs.lstatSync(path).isDirectory()) {
+    if (Array.isArray(path)) return path;
+    return [path];
+  } else {
+    const files = fs.readdirSync(path);
+    const data = [];
     for (const fileName of files) {
-        try {
-            await process(fileName);
-            results.success.push(fileName)
-        } catch(err) {
-            console.log(err);
-            results.errors.push(fileName)
-        }
-        i++;
-        console.log(Math.round(i / files.length * 100) / 100 + '%');
+      data.push(...readDirFiles(path + '/' + fileName));
+    }
+    return data;
+  }
+};
+
+(async function () {
+  const dist = fs.readdirSync('./dist');
+  for (const fileName of dist) {
+    if (fileName !== '.gitkeep') fs.unlinkSync(`./dist/${fileName}`);
+  }
+
+  const files = readDirFiles('./src');
+
+  const results = { success: [], errors: [] };
+
+  let i = 0;
+  for (const fileName of files) {
+    if (!fileName.match(/.*\.jpg$/i)) {
+      i++;
+      continue;
     }
 
-    results.success.forEach(fileName => {
-        fs.unlinkSync(`./src/${fileName}`);
-    });
-
-    if (results.errors.length) {
-        fs.writeFileSync('errors.txt', results.errors);
-        console.log(`Done with ${results.errors.length} errors: find unhandled files in "errors.txt"`);
-    } else {
-        console.log('Success');
+    try {
+      await process(fileName);
+      results.success.push(fileName);
+    } catch (err) {
+      console.log(err);
+      results.errors.push(fileName);
     }
+    i++;
+    console.log(`${Math.round((i / files.length) * 100)}% | ${i} from ${files.length}`);
+  }
+
+  results.success.forEach((fileName) => {
+    fs.unlinkSync(`./src/${fileName}`);
+  });
+
+  if (results.errors.length) {
+    console.log(`Done with ${results.errors.length} errors: find unhandled files in "errors.txt"`);
+  } else {
+    console.log('Success');
+  }
 })();
-
-
-
-    
