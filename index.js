@@ -35,7 +35,7 @@ const readDirFiles = (path) => {
 
   const files = readDirFiles('./src');
 
-  const results = { success: [], errors: [] };
+  const errors = [];
 
   let i = 0;
   for (const fileName of files) {
@@ -46,21 +46,17 @@ const readDirFiles = (path) => {
 
     try {
       await process(fileName);
-      results.success.push(fileName);
+      fs.unlinkSync(fileName);
     } catch (err) {
       console.log(err);
-      results.errors.push(fileName);
+      errors.push(fileName);
     }
     i++;
     console.log(`${Math.round((i / files.length) * 100)}% | ${i} from ${files.length}`);
   }
 
-  results.success.forEach((fileName) => {
-    fs.unlinkSync(`./src/${fileName}`);
-  });
-
-  if (results.errors.length) {
-    console.log(`Done with ${results.errors.length} errors: find unhandled files in "errors.txt"`);
+  if (errors.length) {
+    console.log(`Done with ${errors.length} errors: find unhandled files in "errors.txt"`);
   } else {
     console.log('Success');
   }
