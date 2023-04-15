@@ -41,6 +41,9 @@ const readDirFiles = (path) => {
   for (const fileName of files) {
     if (!fileName.match(/.*\.jpg$/i)) {
       i++;
+      if (fileName !== '.gitkeep') {
+        fs.copyFileSync(fileName, fileName.replace('./src/', './dist/'));
+      }
       continue;
     }
 
@@ -56,6 +59,7 @@ const readDirFiles = (path) => {
   }
 
   if (errors.length) {
+    fs.writeFileSync('errors.txt', JSON.stringify(errors));
     console.log(`Done with ${errors.length} errors: find unhandled files in "errors.txt"`);
   } else {
     console.log('Success');
