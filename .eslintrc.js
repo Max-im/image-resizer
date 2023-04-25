@@ -14,6 +14,7 @@ module.exports = {
     'no-await-in-loop': 'off',
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
+    'no-new': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

@@ -1,30 +1,23 @@
-import React, { FC, useState } from 'react';
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography,
-  Switch,
-  FormControlLabel,
-} from '@mui/material';
-import UploadFile from '../components/UploadFiles';
+import React, { FC, useState, useContext } from 'react';
+import { Box, Tab, Tabs, Typography, Button } from '@mui/material';
+import DragFiles from '../components/DragFiles';
 import HomeDescription from '../components/HomeDescription';
 import { tabsType } from '../interfaces/tabsType';
+import UploadFromFolder from '../components/UploadFromFolder';
+import CompressContext from '../context/Compress.context';
 
 const tabs: tabsType[] = ['photo', 'video'];
 
 const Home: FC = () => {
   const [value, setValue] = useState<number>(0);
-  const [type, setType] = useState<tabsType>(tabs[0]);
-  const [includeNested, setIncludeNested] = useState(true);
+  const context = useContext(CompressContext);
 
   const handleTabChange = (e: any, index: number) => {
     setValue(index);
-    setType(tabs[index]);
   };
 
-  const handleIncludeNestedChange = () => {
-    setIncludeNested(!includeNested);
+  const onCompress = () => {
+    console.log('start');
   };
 
   return (
@@ -43,18 +36,16 @@ const Home: FC = () => {
         ))}
       </Tabs>
 
-      <Box component="div" id={`${type}-panel`} aria-labelledby={`${type}-tab`}>
-        <HomeDescription type={type} />
-        <UploadFile type={type} includeNested={includeNested} />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={includeNested}
-              onChange={handleIncludeNestedChange}
-            />
-          }
-          label="Include Nested Folders"
-        />
+      <Box component="div" id={`${tabs[value]}-panel`}>
+        <HomeDescription type={tabs[value]} />
+        <DragFiles type={tabs[value]} />
+        <UploadFromFolder />
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button variant="contained" onClick={onCompress}>
+          Compress
+        </Button>
       </Box>
     </Box>
   );

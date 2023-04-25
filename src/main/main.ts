@@ -9,7 +9,6 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -26,18 +25,12 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
-
-ipcMain.on('openFolder', async () => {
+ipcMain.on('select.folder', async (event) => {
   const data = await dialog.showOpenDialog({
     properties: ['openFile', 'openDirectory'],
   });
   if (data.canceled) return;
-  const filePaths = { data };
+  event.reply('select.folder', data.filePaths);
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -117,17 +110,10 @@ const createWindow = async () => {
   });
 
   // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
   new AppUpdater();
 };
 
-/**
- * Add event listeners...
- */
-
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
   }

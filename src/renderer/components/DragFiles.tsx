@@ -1,18 +1,13 @@
-import React from 'react';
-import { Button, Typography, Box } from '@mui/material';
+import React, { FC } from 'react';
+import { Typography, Box } from '@mui/material';
 import { tabsType } from 'renderer/interfaces/tabsType';
 // import { DropzoneDialog } from 'material-ui-dropzone';
 
 interface IUploadFile {
   type: tabsType;
-  includeNested: boolean;
 }
 
-const UploadFile: FC<IUploadFile> = ({ type, includeNested }) => {
-  const handleUpload = () => {
-    window.electron.ipcRenderer.sendMessage('openFolder', { includeNested });
-  };
-
+const DragFiles: FC<IUploadFile> = ({ type }) => {
   const setOpenDialog = () => {};
 
   return (
@@ -33,12 +28,6 @@ const UploadFile: FC<IUploadFile> = ({ type, includeNested }) => {
         onClick={setOpenDialog}
       >
         {type.toUpperCase()}
-      </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button variant="contained" component="label" onClick={handleUpload}>
-          Upload From Folder
-        </Button>
       </Box>
       {/* <DropzoneDialog
         open={openDialog}
@@ -63,4 +52,4 @@ const UploadFile: FC<IUploadFile> = ({ type, includeNested }) => {
   );
 };
 
-export default UploadFile;
+export default DragFiles;
