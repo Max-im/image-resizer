@@ -8,6 +8,11 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/no-import-module-exports': 'off',
+    'no-restricted-syntax': 'off',
+    'no-plusplus': 'off',
+    'no-continue': 'off',
+    'no-await-in-loop': 'off',
+    'react/function-component-definition': 'off'
   },
   parserOptions: {
     ecmaVersion: 2020,

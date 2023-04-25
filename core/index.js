@@ -17,14 +17,13 @@ const readDirFiles = (path) => {
   if (!fs.lstatSync(path).isDirectory()) {
     if (Array.isArray(path)) return path;
     return [path];
-  } else {
-    const files = fs.readdirSync(path);
-    const data = [];
-    for (const fileName of files) {
-      data.push(...readDirFiles(path + '/' + fileName));
-    }
-    return data;
   }
+  const files = fs.readdirSync(path);
+  const data = [];
+  for (const fileName of files) {
+    data.push(...readDirFiles(`${path}/${fileName}`));
+  }
+  return data;
 };
 
 (async function () {
@@ -55,12 +54,16 @@ const readDirFiles = (path) => {
       errors.push(fileName);
     }
     i++;
-    console.log(`${Math.round((i / files.length) * 100)}% | ${i} from ${files.length}`);
+    console.log(
+      `${Math.round((i / files.length) * 100)}% | ${i} from ${files.length}`
+    );
   }
 
   if (errors.length) {
     fs.writeFileSync('errors.txt', JSON.stringify(errors));
-    console.log(`Done with ${errors.length} errors: find unhandled files in "errors.txt"`);
+    console.log(
+      `Done with ${errors.length} errors: find unhandled files in "errors.txt"`
+    );
   } else {
     console.log('Success');
   }
