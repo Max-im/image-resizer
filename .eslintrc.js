@@ -12,7 +12,7 @@ module.exports = {
     'no-plusplus': 'off',
     'no-continue': 'off',
     'no-await-in-loop': 'off',
-    'react/function-component-definition': 'off'
+    'react/function-component-definition': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,
