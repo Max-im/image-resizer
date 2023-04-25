@@ -9,7 +9,8 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import fs from 'fs';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -29,6 +30,14 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+ipcMain.on('openFolder', async () => {
+  const data = await dialog.showOpenDialog({
+    properties: ['openFile', 'openDirectory'],
+  });
+  if (data.canceled) return;
+  const filePaths = { data };
 });
 
 if (process.env.NODE_ENV === 'production') {

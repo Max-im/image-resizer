@@ -2,6 +2,7 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import routes from '../routes/routes';
 import Header from './Header';
+import Loader from './Loader';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           ))}
         </Routes>
       </Container>
+      <Loader />
     </Router>
   );
 }

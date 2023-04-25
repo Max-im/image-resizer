@@ -13,6 +13,7 @@ module.exports = {
     'no-continue': 'off',
     'no-await-in-loop': 'off',
     'react/function-component-definition': 'off',
+    'react/prop-types': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,

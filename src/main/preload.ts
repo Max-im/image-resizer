@@ -2,11 +2,11 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels = 'ipc-example' | 'openFolder';
 
 const electronHandler = {
   ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
+    sendMessage(channel: Channels, args?: unknown) {
       ipcRenderer.send(channel, args);
     },
     on(channel: Channels, func: (...args: unknown[]) => void) {

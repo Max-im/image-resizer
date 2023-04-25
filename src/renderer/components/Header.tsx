@@ -9,7 +9,7 @@ import '../styles/header.css';
 
 const Header: FC = () => {
   return (
-    <AppBar position="static" sx={{ bgcolor: 'white' }}>
+    <AppBar position="static" sx={{ bgcolor: '#ddd' }}>
       <Container maxWidth="md" sx={{ mt: 1, mb: 1 }}>
         <Box sx={{ flexGrow: 1, display: 'flex' }}>
           {routes
@@ -25,7 +25,7 @@ const Header: FC = () => {
                 <Button
                   variant="outlined"
                   size="small"
-                  sx={{ display: 'block' }}
+                  sx={{ display: 'block', bgcolor: 'white' }}
                 >
                   {route.title}
                 </Button>
