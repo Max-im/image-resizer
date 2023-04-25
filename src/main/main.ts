@@ -9,11 +9,13 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import IStartCompress from 'contracts/IStartCompress';
 
 class AppUpdater {
   constructor() {
@@ -31,6 +33,25 @@ ipcMain.on('select.folder', async (event) => {
   });
   if (data.canceled) return;
   event.reply('select.folder', data.filePaths);
+});
+
+const readDirFiles = (folderPath: string): string[] => {
+  if (!fs.lstatSync(folderPath).isDirectory()) {
+    if (Array.isArray(folderPath)) return folderPath;
+    return [folderPath];
+  }
+  const files = fs.readdirSync(folderPath);
+  const data = [];
+  for (const fileName of files) {
+    data.push(...readDirFiles(`${folderPath}/${fileName}`));
+  }
+  return data;
+};
+
+ipcMain.on('start.compress', async (event, data: IStartCompress) => {
+  const files = readDirFiles(data.targetFolder);
+  console.log(files.length, '8888888888888888888888888888888888888')
+  event.reply('found.files', files.length);
 });
 
 if (process.env.NODE_ENV === 'production') {

@@ -1,23 +1,23 @@
-import React, { FC, useState, useContext } from 'react';
+import React, { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Tab, Tabs, Typography, Button } from '@mui/material';
-import DragFiles from '../components/DragFiles';
 import HomeDescription from '../components/HomeDescription';
 import { tabsType } from '../interfaces/tabsType';
 import UploadFromFolder from '../components/UploadFromFolder';
-import CompressContext from '../context/Compress.context';
+// import DragFiles from '../components/DragFiles';
 
 const tabs: tabsType[] = ['photo', 'video'];
 
 const Home: FC = () => {
   const [value, setValue] = useState<number>(0);
-  const context = useContext(CompressContext);
+  const navigate = useNavigate();
 
   const handleTabChange = (e: any, index: number) => {
     setValue(index);
   };
 
   const onCompress = () => {
-    console.log('start');
+    navigate('/compressnig');
   };
 
   return (
@@ -38,7 +38,7 @@ const Home: FC = () => {
 
       <Box component="div" id={`${tabs[value]}-panel`}>
         <HomeDescription type={tabs[value]} />
-        <DragFiles type={tabs[value]} />
+        {/* <DragFiles type={tabs[value]} /> */}
         <UploadFromFolder />
       </Box>
 

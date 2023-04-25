@@ -1,1 +1,1 @@
-export type EventTypes = 'select.folder';
+export type EventTypes = 'select.folder' | 'start.compress' | 'found.files';
