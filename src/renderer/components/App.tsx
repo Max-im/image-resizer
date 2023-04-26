@@ -7,7 +7,6 @@ import CompressContext, {
 } from '../context/Compress.context';
 import routes from '../routes/routes';
 import Header from './Header';
-import Loader from './Loader';
 
 export default function App() {
   const [targetFolder, setTargetFolder] = useState<string | undefined>();
@@ -27,7 +26,6 @@ export default function App() {
             ))}
           </Routes>
         </Container>
-        <Loader />
       </Router>
     </CompressContext.Provider>
   );

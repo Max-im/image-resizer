@@ -1,3 +1,3 @@
 export default interface IStartCompress {
-    targetFolder: string;
+  targetFolder: string;
 }

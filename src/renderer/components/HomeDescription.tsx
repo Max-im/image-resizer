@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { Typography, Chip } from '@mui/material';
-import { tabsType } from '../interfaces/tabsType';
+import { Typography } from '@mui/material';
 
-const HomeDescription: FC<{ type: tabsType }> = ({ type }) => {
+const HomeDescription: FC = () => {
   return (
     <Typography sx={{ mt: 3 }} variant="body1" align="justify" gutterBottom>
-      Our {type} compression feature allows you to reduce the file size of your{' '}
-      {type}s without sacrificing quality.
+      Our media compression feature allows you to reduce the file size of your{' '}
+      photo and video files without sacrificing quality.
     </Typography>
   );
 };

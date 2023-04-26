@@ -17,6 +17,12 @@ const routes: IRoute[] = [
     inMenu: true,
   },
   {
+    url: '/settings',
+    title: 'Settings',
+    element: About,
+    inMenu: true,
+  },
+  {
     url: '/compressnig',
     title: 'Compressing...',
     element: Compressing,
