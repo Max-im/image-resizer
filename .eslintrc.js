@@ -15,6 +15,11 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
     'no-new': 'off',
+    'lines-between-class-members': [
+      'error',
+      'always',
+      { 'exceptAfterSingleLine': true },
+    ]
   },
   parserOptions: {
     ecmaVersion: 2020,

@@ -16,6 +16,7 @@ import log from 'electron-log';
 import IStartCompress from 'contracts/IStartCompress';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import PhotoFile from './PhotoFile';
 
 class AppUpdater {
   constructor() {
@@ -52,17 +53,23 @@ ipcMain.on('start.compress', async (event, data: IStartCompress) => {
   const files = readDirFiles(data.targetFolder);
 
   const imgRegexp = /^\.(jpe?g|png|gif|bmp|webp)$/i;
-  let targetFilesNum = 0;
 
-  for (const file of files) {
-    const ext = path.extname(file);
+  event.reply('found.files', files.length);
+
+  for (const filePath of files) {
+    const ext = path.extname(filePath);
 
     if (imgRegexp.test(ext)) {
-      targetFilesNum++;
+      const fileItem = new PhotoFile(filePath, ext);
+      console.log(fileItem.name);
+      try {
+        // await fileItem.handle();
+        event.reply('handle.file');
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
-
-  event.reply('found.files', targetFilesNum);
 });
 
 if (process.env.NODE_ENV === 'production') {
