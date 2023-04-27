@@ -27,7 +27,7 @@ const Compressing: FC = () => {
   }, [targetFolder]);
 
   window.electron.ipcRenderer.on('found.files', (data) => {
-    setFiles(data);
+    setFiles(data as number);
     setTitle('Compressing');
   });
 
