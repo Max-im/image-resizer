@@ -15,6 +15,7 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
     'no-new': 'off',
+    'class-methods-use-this': 'off',
     'lines-between-class-members': [
       'error',
       'always',

@@ -16,7 +16,8 @@ import log from 'electron-log';
 import IStartCompress from 'contracts/IStartCompress';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import PhotoFile from './PhotoFile';
+import Config from './config/Config';
+import FileFabric from './file/FileFabric';
 
 class AppUpdater {
   constructor() {
@@ -36,7 +37,7 @@ ipcMain.on('select.folder', async (event) => {
   event.reply('select.folder', data.filePaths);
 });
 
-const readDirFiles = (folderPath: string): string[] => {
+function readDirFiles(folderPath: string): string[] {
   if (!fs.lstatSync(folderPath).isDirectory()) {
     if (Array.isArray(folderPath)) return folderPath;
     return [folderPath];
@@ -47,29 +48,29 @@ const readDirFiles = (folderPath: string): string[] => {
     data.push(...readDirFiles(`${folderPath}/${fileName}`));
   }
   return data;
-};
+}
 
-ipcMain.on('start.compress', async (event, data: IStartCompress) => {
-  const files = readDirFiles(data.targetFolder);
+ipcMain.on('compress.start', async (event, data: IStartCompress) => {
+  const toCompress = readDirFiles(data.targetFolder);
 
-  const imgRegexp = /^\.(jpe?g|png|gif|bmp|webp)$/i;
+  event.reply('found.files', toCompress.length);
 
-  event.reply('found.files', files.length);
+  const config = new Config(data);
 
-  for (const filePath of files) {
-    const ext = path.extname(filePath);
+  for (const filePath of toCompress) {
+    const FileItem = FileFabric.getConstructor(path.extname(filePath));
 
-    if (imgRegexp.test(ext)) {
-      const fileItem = new PhotoFile(filePath, ext);
-      console.log(fileItem.name);
-      try {
-        // await fileItem.handle();
-        event.reply('handle.file');
-      } catch (err) {
-        console.log(err);
-      }
+    const file = new FileItem(filePath, config);
+
+    try {
+      await file.handle();
+      event.reply('compress.file');
+    } catch (err) {
+      event.reply('compress.error', filePath);
     }
   }
+
+  event.reply('compress.completed');
 });
 
 if (process.env.NODE_ENV === 'production') {

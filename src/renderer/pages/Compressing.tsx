@@ -1,32 +1,50 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Backdrop,
   LinearProgress,
   Container,
   Typography,
   Box,
+  Button,
 } from '@mui/material';
 import CompressContext from '../context/Compress.context';
+import Statistic from '../components/Statistic';
 
 const Compressing: FC = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState<string>('Prepare');
-  const [progress, setProgress] = useState<number>(0);
   const [files, setFiles] = useState<number>(0);
-  const { targetFolder } = useContext(CompressContext);
+  const [handled, setHandled] = useState<number>(0);
+  const [completed, setCompleted] = useState<boolean>(false);
+  const { targetFolder, setTargetFolder } = useContext(CompressContext);
   const isOpen = true;
 
   useEffect(() => {
-    window.electron.ipcRenderer.sendMessage('start.compress', { targetFolder });
+    window.electron.ipcRenderer.sendMessage('compress.start', { targetFolder });
   }, [targetFolder]);
 
   window.electron.ipcRenderer.on('found.files', (data) => {
-    setFiles(data[0]);
+    setFiles(data);
     setTitle('Compressing');
   });
 
-  window.electron.ipcRenderer.on('handle.file', (data) => {
-    setProgress(progress + 1);
+  window.electron.ipcRenderer.on('compress.file', () => {
+    setHandled(handled + 1);
   });
+
+  window.electron.ipcRenderer.on('compress.error', (data) => {
+    console.error(data);
+  });
+
+  window.electron.ipcRenderer.on('compress.completed', () => {
+    setCompleted(true);
+  });
+
+  const onDone = () => {
+    setTargetFolder();
+    navigate('/');
+  };
 
   return (
     <Backdrop
@@ -36,13 +54,33 @@ const Compressing: FC = () => {
     >
       <Container
         maxWidth="xs"
-        sx={{ bgcolor: 'white', pt: 1, pb: 3, textAlign: 'center' }}
+        sx={{ bgcolor: 'white', pt: 2, pb: 1, textAlign: 'center' }}
       >
-        <Typography variant="h5" mb="2">
+        <Typography variant="h5" sx={{ mb: 2 }}>
           {title}
         </Typography>
-        <Box sx={{ width: '90%' }}>
-          <LinearProgress variant="determinate" value={progress} />
+
+        <Statistic
+          handled={handled}
+          files={files}
+          success={handled}
+          errors={handled}
+        />
+
+        <Box sx={{ width: '100%', mt: 2 }}>
+          <LinearProgress
+            variant="determinate"
+            value={(handled / files) * 100}
+          />
+        </Box>
+
+        <Box sx={{ mt: 2 }}>
+          {completed && (
+            <Button variant="outlined" onClick={onDone}>
+              Done
+            </Button>
+          )}
+          {!completed && <Button variant="outlined">Cancel</Button>}
         </Box>
       </Container>
     </Backdrop>

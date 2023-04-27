@@ -1,5 +1,7 @@
 export type EventTypes =
   | 'select.folder'
-  | 'start.compress'
   | 'found.files'
-  | 'handle.file';
+  | 'compress.start'
+  | 'compress.completed'
+  | 'compress.error'
+  | 'compress.file';
