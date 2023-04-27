@@ -17,6 +17,8 @@ const Compressing: FC = () => {
   const [files, setFiles] = useState<number>(0);
   const [handled, setHandled] = useState<number>(0);
   const [completed, setCompleted] = useState<boolean>(false);
+  const [errors, setErrors] = useState<number>(0);
+  const [success, setSuccess] = useState<number>(0);
   const { targetFolder, setTargetFolder } = useContext(CompressContext);
   const isOpen = true;
 
@@ -31,10 +33,13 @@ const Compressing: FC = () => {
 
   window.electron.ipcRenderer.on('compress.file', () => {
     setHandled(handled + 1);
+    setSuccess(success + 1);
   });
 
   window.electron.ipcRenderer.on('compress.error', (data) => {
     console.error(data);
+    setHandled(handled + 1);
+    setErrors(errors + 1);
   });
 
   window.electron.ipcRenderer.on('compress.completed', () => {
@@ -63,8 +68,8 @@ const Compressing: FC = () => {
         <Statistic
           handled={handled}
           files={files}
-          success={handled}
-          errors={handled}
+          success={success}
+          errors={errors}
         />
 
         <Box sx={{ width: '100%', mt: 2 }}>

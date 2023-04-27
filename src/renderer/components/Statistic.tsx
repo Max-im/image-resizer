@@ -20,15 +20,15 @@ const Statistic: FC<IStatistic> = ({ files, handled, success, errors }) => {
   const data = [
     {
       title: 'Handled',
-      value: `(${((handled / files) * 100).toFixed()}%)`,
+      value: `${handled} (${((handled / files) * 100).toFixed()}%)`,
     },
     {
       title: 'Success',
-      value: `(${((success / files) * 100).toFixed()}%)`,
+      value: `${success} (${((success / files) * 100).toFixed()}%)`,
     },
     {
       title: 'Error',
-      value: `(${((errors / files) * 100).toFixed()}%)`,
+      value: `${errors} (${((errors / files) * 100).toFixed()}%)`,
     },
   ];
 
