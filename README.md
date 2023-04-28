@@ -14,11 +14,9 @@ To install and run the app, follow these steps:
 
 ## Usage
 
-1. Open the app and select the file you want to compress.
-2. Choose the compression level (low, medium, high) and click the "Compress" button.
-3. The compressed file will be saved in the same directory as the original file.
-
-Note: The app currently supports JPEG, PNG, and MP4 file formats.
+1. Open the app and select the folder with photos and videos you want to compress.
+2. Click the "Compress" button.
+3. Enjoy.
 
 ## License
 

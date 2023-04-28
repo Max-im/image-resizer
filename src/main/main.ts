@@ -14,7 +14,6 @@ import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import IStartCompress from 'contracts/IStartCompress';
-import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import Config from './config/Config';
 import FileFabric from './file/FileFabric';
@@ -139,9 +138,6 @@ const createWindow = async () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
