@@ -49,7 +49,14 @@ function readDirFiles(folderPath: string): string[] {
   return data;
 }
 
+let isCancel = false;
+
+ipcMain.on('compress.cancel', () => {
+  isCancel = true;
+});
+
 ipcMain.on('compress.start', async (event, data: IStartCompress) => {
+  isCancel = false;
   const toCompress = readDirFiles(data.targetFolder);
 
   event.reply('found.files', toCompress.length);
@@ -57,6 +64,9 @@ ipcMain.on('compress.start', async (event, data: IStartCompress) => {
   const config = new Config(data);
 
   for (const filePath of toCompress) {
+    if (isCancel) {
+      break;
+    }
     const FileItem = FileFabric.getConstructor(path.extname(filePath));
 
     const file = new FileItem(filePath, config);

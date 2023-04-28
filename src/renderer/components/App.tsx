@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import CompressContext, {
-  defaultCompressContext,
-} from '../context/Compress.context';
+import CompressContext from '../context/Compress.context';
 import routes from '../routes/routes';
 import Header from './Header';
+import '../styles/app.css';
 
 export default function App() {
   const [targetFolder, setTargetFolder] = useState<string | undefined>();
@@ -15,7 +14,7 @@ export default function App() {
     <CompressContext.Provider value={{ targetFolder, setTargetFolder }}>
       <Router>
         <Header />
-        <Container maxWidth="md" sx={{ mt: 2 }}>
+        <Container className="app__container" maxWidth="md" sx={{ mt: 2 }}>
           <Routes>
             {routes.map((route) => (
               <Route

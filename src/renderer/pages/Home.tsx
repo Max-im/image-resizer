@@ -15,25 +15,22 @@ const Home: FC = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" align="center" gutterBottom>
-        Welcome to Our App!
-      </Typography>
+    <Box sx={{ display: 'flex', height: '100%' }}>
+      <Box sx={{ m: 'auto' }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Welcome to Our App!
+        </Typography>
 
-      <Typography variant="body1" align="center" gutterBottom>
-        Please select type of file you need to compress
-      </Typography>
-
-      <Box component="div">
-        <HomeDescription />
-        {/* <DragFiles type={tabs[value]} /> */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-          {!targetFolder && <UploadFromFolder />}
-          {targetFolder && (
-            <Button variant="contained" onClick={onCompress}>
-              Compress
-            </Button>
-          )}
+        <Box component="div">
+          <HomeDescription />
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+            {!targetFolder && <UploadFromFolder />}
+            {targetFolder && (
+              <Button variant="contained" onClick={onCompress}>
+                Compress
+              </Button>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>

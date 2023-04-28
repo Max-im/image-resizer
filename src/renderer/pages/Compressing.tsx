@@ -19,6 +19,7 @@ const Compressing: FC = () => {
   const [completed, setCompleted] = useState<boolean>(false);
   const [errors, setErrors] = useState<number>(0);
   const [success, setSuccess] = useState<number>(0);
+  const [cancelled, setCancelled] = useState<boolean>(false);
   const { targetFolder, setTargetFolder } = useContext(CompressContext);
   const isOpen = true;
 
@@ -46,9 +47,19 @@ const Compressing: FC = () => {
     setCompleted(true);
   });
 
+  window.electron.ipcRenderer.on('compress.cancelled', () => {
+    setTitle('Cancelled');
+  });
+
   const onDone = () => {
     setTargetFolder();
     navigate('/');
+  };
+
+  const onCancel = () => {
+    setTitle('Cancelling...');
+    setCancelled(true);
+    window.electron.ipcRenderer.sendMessage('compress.cancel');
   };
 
   return (
@@ -61,8 +72,11 @@ const Compressing: FC = () => {
         maxWidth="xs"
         sx={{ bgcolor: 'white', pt: 2, pb: 1, textAlign: 'center' }}
       >
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 1 }}>
           {title}
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3 }}>
+          Please wait
         </Typography>
 
         <Statistic
@@ -82,10 +96,14 @@ const Compressing: FC = () => {
         <Box sx={{ mt: 2 }}>
           {completed && (
             <Button variant="outlined" onClick={onDone}>
-              Done
+              {cancelled ? 'Back' : 'Done'}
             </Button>
           )}
-          {!completed && <Button variant="outlined">Cancel</Button>}
+          {!completed && (
+            <Button variant="outlined" onClick={onCancel}>
+              Cancel
+            </Button>
+          )}
         </Box>
       </Container>
     </Backdrop>
