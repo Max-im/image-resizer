@@ -2,6 +2,7 @@ import IRoute from '../interfaces/IRoute';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Compressing from '../pages/Compressing';
+import Settings from '../pages/Settings';
 
 const routes: IRoute[] = [
   {
@@ -19,7 +20,7 @@ const routes: IRoute[] = [
   {
     url: '/settings',
     title: 'Settings',
-    element: About,
+    element: Settings,
     inMenu: true,
   },
   {
