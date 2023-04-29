@@ -8,7 +8,7 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import CompressContext from '../context/Compress.context';
+import SettingsContext, { defaultSettings } from '../context/Compress.context';
 import Statistic from '../components/Statistic';
 
 const Compressing: FC = () => {
@@ -20,12 +20,12 @@ const Compressing: FC = () => {
   const [errors, setErrors] = useState<number>(0);
   const [success, setSuccess] = useState<number>(0);
   const [cancelled, setCancelled] = useState<boolean>(false);
-  const { targetFolder, setTargetFolder } = useContext(CompressContext);
+  const { settings, setSettings } = useContext(SettingsContext);
   const isOpen = true;
 
   useEffect(() => {
-    window.electron.ipcRenderer.sendMessage('compress.start', { targetFolder });
-  }, [targetFolder]);
+    window.electron.ipcRenderer.sendMessage('compress.start', settings);
+  }, [settings]);
 
   window.electron.ipcRenderer.on('found.files', (data) => {
     setFiles(data as number);
@@ -52,7 +52,7 @@ const Compressing: FC = () => {
   });
 
   const onDone = () => {
-    setTargetFolder();
+    setSettings!(defaultSettings);
     navigate('/');
   };
 

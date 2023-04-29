@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import CompressContext from '../context/Compress.context';
+import ISettings from '../interfaces/ISettings';
+import SettingsContext, { defaultSettings } from '../context/Compress.context';
 import routes from '../routes/routes';
 import Header from './Header';
 import '../styles/app.css';
 
 export default function App() {
-  const [targetFolder, setTargetFolder] = useState<string | undefined>();
+  const [settings, setSettings] = useState<ISettings>(defaultSettings);
 
   return (
-    <CompressContext.Provider value={{ targetFolder, setTargetFolder }}>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
       <Router>
         <Header />
         <Container className="app__container" maxWidth="md" sx={{ mt: 2 }}>
@@ -26,6 +27,6 @@ export default function App() {
           </Routes>
         </Container>
       </Router>
-    </CompressContext.Provider>
+    </SettingsContext.Provider>
   );
 }

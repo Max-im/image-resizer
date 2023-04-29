@@ -16,6 +16,7 @@ module.exports = {
     'react/prop-types': 'off',
     'no-new': 'off',
     'class-methods-use-this': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
     'lines-between-class-members': [
       'error',
       'always',

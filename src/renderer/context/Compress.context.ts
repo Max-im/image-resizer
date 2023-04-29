@@ -1,10 +1,15 @@
 import { createContext } from 'react';
-import ICompressContext from '../interfaces/ICompressContext';
+import ISettings, { ISettingsType } from '../interfaces/ISettings';
 
-export const defaultCompressContext: ICompressContext = {
+export const defaultSettings: ISettings = {
   targetFolder: undefined,
+  deleteSourceFiles: true,
+  ignoreNonMediaFiles: false,
+  outputDirectory: '',
 };
 
-const CompressContext = createContext(defaultCompressContext);
+const SettingsContext = createContext<ISettingsType>({
+  settings: defaultSettings,
+});
 
-export default CompressContext;
+export default SettingsContext;

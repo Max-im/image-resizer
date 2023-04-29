@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button } from '@mui/material';
 import HomeDescription from '../components/HomeDescription';
 import UploadFromFolder from '../components/UploadFromFolder';
-import CompressContext from '../context/Compress.context';
-// import DragFiles from '../components/DragFiles';
+import SettingsContext from '../context/Compress.context';
 
 const Home: FC = () => {
   const navigate = useNavigate();
-  const { targetFolder } = useContext(CompressContext);
+  const { settings } = useContext(SettingsContext);
 
   const onCompress = () => {
     navigate('/compressnig');
@@ -24,8 +23,8 @@ const Home: FC = () => {
         <Box component="div">
           <HomeDescription />
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            {!targetFolder && <UploadFromFolder />}
-            {targetFolder && (
+            {!settings.targetFolder && <UploadFromFolder />}
+            {settings.targetFolder && (
               <Button variant="contained" onClick={onCompress}>
                 Compress
               </Button>
