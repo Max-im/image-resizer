@@ -1,14 +1,15 @@
-import React, { useContext, FC } from 'react';
+import React, { useContext, FC, useState } from 'react';
 import {
   Switch,
   FormControlLabel,
   FormGroup,
   FormControl,
   FormLabel,
-  TextField,
-  Button,
   Typography,
   Box,
+  RadioGroup,
+  Radio,
+  Divider,
 } from '@mui/material';
 import SettingsContext from '../context/Compress.context';
 
@@ -18,7 +19,10 @@ const Settings: FC = () => {
   const handleDeleteSourceFilesChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSettings!({ ...settings, deleteSourceFiles: e.target.checked });
+    setSettings!({
+      ...settings,
+      deleteSourceFiles: e.target.checked,
+    });
   };
 
   const handleIgnoreNonMediaFilesChange = (
@@ -36,9 +40,25 @@ const Settings: FC = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Settings
       </Typography>
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Settings</FormLabel>
+
+      <FormControl>
         <FormGroup>
+          <FormLabel>Non Media Files</FormLabel>
+          <RadioGroup
+            defaultValue="true"
+            onChange={handleIgnoreNonMediaFilesChange}
+          >
+            <FormControlLabel value="true" control={<Radio />} label="Copy" />
+            <FormControlLabel
+              value="false"
+              control={<Radio />}
+              label="Ignore"
+            />
+          </RadioGroup>
+        </FormGroup>
+        <Divider sx={{ mt: 3, mb: 3 }} />
+        <FormGroup>
+          <FormLabel>Source Files</FormLabel>
           <FormControlLabel
             control={
               <Switch
@@ -48,25 +68,27 @@ const Settings: FC = () => {
             }
             label="Delete source files after compressing"
           />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={settings.ignoreNonMediaFiles}
-                onChange={handleIgnoreNonMediaFilesChange}
-              />
-            }
-            label="Ignore non photo/video files"
-          />
-          <TextField
-            label="Output Directory"
-            value={settings.outputDirectory}
+        </FormGroup>
+
+        <Divider sx={{ mt: 3, mb: 3 }} />
+
+        <FormGroup>
+          <FormLabel>Output Folder</FormLabel>
+          <RadioGroup
+            defaultValue="near"
             onChange={handleOutputDirectoryChange}
-            variant="outlined"
-            margin="normal"
-          />
-          <Button variant="contained" color="primary">
-            Browse
-          </Button>
+          >
+            <FormControlLabel
+              value="near"
+              control={<Radio />}
+              label="Near by Source folder"
+            />
+            <FormControlLabel
+              value="inside"
+              control={<Radio />}
+              label="Inside Source folder"
+            />
+          </RadioGroup>
         </FormGroup>
       </FormControl>
     </Box>

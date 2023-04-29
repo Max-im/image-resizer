@@ -5,7 +5,7 @@ export const defaultSettings: ISettings = {
   targetFolder: undefined,
   deleteSourceFiles: true,
   ignoreNonMediaFiles: false,
-  outputDirectory: '',
+  outputDirectory: 'near',
 };
 
 const SettingsContext = createContext<ISettingsType>({
