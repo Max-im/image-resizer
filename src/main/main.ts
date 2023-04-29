@@ -13,8 +13,8 @@ import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import IStartCompress from 'contracts/IStartCompress';
 import { resolveHtmlPath } from './util';
+import ISettings from '../contracts/ISettings';
 import Config from './config/Config';
 import FileFabric from './file/FileFabric';
 
@@ -55,8 +55,9 @@ ipcMain.on('compress.cancel', () => {
   isCancel = true;
 });
 
-ipcMain.on('compress.start', async (event, data: IStartCompress) => {
+ipcMain.on('compress.start', async (event, data: ISettings) => {
   isCancel = false;
+
   const toCompress = readDirFiles(data.targetFolder);
 
   event.reply('found.files', toCompress.length);

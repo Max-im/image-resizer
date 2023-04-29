@@ -1,19 +1,24 @@
 import fs from 'fs';
 import path from 'path';
-import IStartCompress from '../../contracts/IStartCompress';
+import ISettings from '../../contracts/ISettings';
 
 export default class Config {
   srcPath: string;
   srcDir: string;
   outPath: string;
 
-  constructor(data: IStartCompress) {
+  constructor(data: ISettings) {
     const { targetFolder } = data;
-    // const folder = targetFolder.replace(/(\s+)/g, '\/$1');
 
     this.srcPath = path.dirname(targetFolder);
     this.srcDir = path.basename(targetFolder);
-    this.outPath = path.join(this.srcPath, `${this.srcDir}_compressed`);
+    let outPath;
+    if (data.outputDirectory === 'near') {
+      outPath = path.join(this.srcPath, `${this.srcDir}_compressed`);
+    } else {
+      outPath = path.join(targetFolder, `${this.srcDir}_compressed`);
+    }
+    this.outPath = outPath;
 
     if (!fs.existsSync(this.outPath)) {
       fs.mkdirSync(this.outPath);
