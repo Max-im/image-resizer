@@ -8,6 +8,7 @@ export default class PhotoFile extends InputFile {
         if (err) reject(err);
         else {
           file.quality(60).write(this.outFile);
+
           resolve();
         }
       });

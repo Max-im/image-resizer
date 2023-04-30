@@ -74,6 +74,7 @@ ipcMain.on('compress.start', async (event, data: ISettings) => {
 
     try {
       await file.handle();
+      if (file.config.shouldDeleteSource) file.deleteSrcFile();
       event.reply('compress.file');
     } catch (err) {
       event.reply('compress.error', filePath);

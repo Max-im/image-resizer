@@ -6,12 +6,15 @@ export default class Config {
   srcPath: string;
   srcDir: string;
   outPath: string;
+  shouldDeleteSource: boolean;
 
   constructor(data: ISettings) {
     const { targetFolder } = data;
 
+    this.shouldDeleteSource = data.deleteSourceFiles;
     this.srcPath = path.dirname(targetFolder);
     this.srcDir = path.basename(targetFolder);
+
     let outPath;
     if (data.outputDirectory === 'near') {
       outPath = path.join(this.srcPath, `${this.srcDir}_compressed`);
