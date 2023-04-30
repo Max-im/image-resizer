@@ -51,6 +51,10 @@ const Compressing: FC = () => {
     setTitle('Cancelled');
   });
 
+  window.electron.ipcRenderer.on('compress.exception', (message) => {
+    navigate(`/error?message=${message}`);
+  });
+
   const onDone = () => {
     setSettings!({ ...settings, targetFolder: undefined });
     navigate('/');

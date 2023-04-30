@@ -6,4 +6,5 @@ export type EventTypes =
   | 'compress.error'
   | 'compress.cancel'
   | 'compress.cancelled'
+  | 'compress.exception'
   | 'compress.file';
