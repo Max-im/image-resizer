@@ -8,7 +8,7 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import SettingsContext, { defaultSettings } from '../context/Compress.context';
+import SettingsContext from '../context/Compress.context';
 import Statistic from '../components/Statistic';
 
 const Compressing: FC = () => {
@@ -52,7 +52,7 @@ const Compressing: FC = () => {
   });
 
   const onDone = () => {
-    setSettings!(defaultSettings);
+    setSettings!({ ...settings, targetFolder: undefined });
     navigate('/');
   };
 
@@ -95,7 +95,7 @@ const Compressing: FC = () => {
 
         <Box sx={{ mt: 2 }}>
           {completed && (
-            <Button variant="outlined" onClick={onDone}>
+            <Button variant="contained" onClick={onDone}>
               {cancelled ? 'Back' : 'Done'}
             </Button>
           )}
