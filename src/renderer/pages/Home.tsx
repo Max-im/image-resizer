@@ -17,7 +17,7 @@ const Home: FC = () => {
     <Box sx={{ display: 'flex', height: '100%' }}>
       <Box sx={{ m: 'auto' }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Welcome to <br/>Media Compressor
+          Welcome to <br /> Media Compressor
         </Typography>
 
         <Box component="div">

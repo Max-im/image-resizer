@@ -7,10 +7,13 @@ export default class Config {
   srcDir: string;
   outPath: string;
   shouldDeleteSource: boolean;
+  ignoreNonMediaFiles: boolean;
 
   constructor(data: ISettings) {
     const { targetFolder } = data;
 
+    console.log(data);
+    this.ignoreNonMediaFiles = data.ignoreNonMediaFiles;
     this.shouldDeleteSource = data.deleteSourceFiles;
     this.srcPath = path.dirname(targetFolder);
     this.srcDir = path.basename(targetFolder);

@@ -1,4 +1,4 @@
-import React, { useContext, FC, useState } from 'react';
+import React, { useContext, FC } from 'react';
 import {
   Switch,
   FormControlLabel,
@@ -28,7 +28,10 @@ const Settings: FC = () => {
   const handleIgnoreNonMediaFilesChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setSettings!({ ...settings, ignoreNonMediaFiles: e.target.checked });
+    setSettings!({
+      ...settings,
+      ignoreNonMediaFiles: e.target.value === 'true',
+    });
   };
 
   const handleOutputDirectoryChange = (e: any) => {
@@ -45,15 +48,11 @@ const Settings: FC = () => {
         <FormGroup>
           <FormLabel>Non Media Files</FormLabel>
           <RadioGroup
-            defaultValue="true"
+            value={settings.ignoreNonMediaFiles}
             onChange={handleIgnoreNonMediaFilesChange}
           >
-            <FormControlLabel value="true" control={<Radio />} label="Copy" />
-            <FormControlLabel
-              value="false"
-              control={<Radio />}
-              label="Ignore"
-            />
+            <FormControlLabel value="false" control={<Radio />} label="Copy" />
+            <FormControlLabel value="true" control={<Radio />} label="Ignore" />
           </RadioGroup>
         </FormGroup>
         <Divider sx={{ mt: 3, mb: 3 }} />
@@ -75,7 +74,7 @@ const Settings: FC = () => {
         <FormGroup>
           <FormLabel>Output Folder</FormLabel>
           <RadioGroup
-            defaultValue="near"
+            value={settings.outputDirectory}
             onChange={handleOutputDirectoryChange}
           >
             <FormControlLabel

@@ -59,6 +59,10 @@ ipcMain.on('compress.start', async (event, data: ISettings) => {
   isCancel = false;
 
   const toCompress = readDirFiles(data.targetFolder);
+  if (!toCompress.length) {
+    event.reply('compress.error', 'The Folder is Empty');
+    return;
+  }
 
   event.reply('found.files', toCompress.length);
 

@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Compressing from '../pages/Compressing';
 import Settings from '../pages/Settings';
+import Error from '../pages/Error';
 
 const routes: IRoute[] = [
   {
@@ -27,6 +28,12 @@ const routes: IRoute[] = [
     url: '/compressnig',
     title: 'Compressing...',
     element: Compressing,
+    inMenu: false,
+  },
+  {
+    url: '/error',
+    title: 'Error',
+    element: Error,
     inMenu: false,
   },
 ];
