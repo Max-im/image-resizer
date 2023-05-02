@@ -1,8 +1,9 @@
-import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
 import InputFile from './InputFile';
 
-ffmpeg.setFfmpegPath(ffmpegPath.path);
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 export default class VideoFile extends InputFile {
   async handle(): Promise<void> {
