@@ -1,7 +1,7 @@
 # Media-compressor
 > Image and Video Size Reducer
 
-This Electron app is designed to help you reduce the size of your image and video files, making it easier to store and share them. The app uses the [Sharp](https://github.com/lovell/sharp) library to compress images and [FFmpeg](https://www.ffmpeg.org/) to compress videos. Based on [electron react boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate.git)
+This Electron app is designed to help you reduce the size of your image and video files, making it easier to store and share them. The app uses the [Jimp](https://github.com/jimp-dev/jimp) library to compress images and [FFmpeg](https://www.ffmpeg.org/) to compress videos. Based on [electron react boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate.git)
 
 ## Installation
 
