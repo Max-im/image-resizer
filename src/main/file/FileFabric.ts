@@ -1,6 +1,6 @@
-import PhotoFile from './PhotoFile';
+import PhotoFile from '../photo/PhotoFile';
+import VideoFile from '../video/VideoFile';
 import NonTargetedFile from './NonTargetedFile';
-import VideoFile from './VideoFile';
 
 export default class FileFabric {
   static getConstructor(ext: string) {

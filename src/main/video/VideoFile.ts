@@ -1,9 +1,5 @@
-import ffmpeg from 'fluent-ffmpeg';
-import InputFile from './InputFile';
-
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-
-ffmpeg.setFfmpegPath(ffmpegPath);
+import ffmpeg from './provider';
+import InputFile from '../file/InputFile';
 
 export default class VideoFile extends InputFile {
   async handle(): Promise<void> {
@@ -15,8 +11,8 @@ export default class VideoFile extends InputFile {
         .addOption('-preset', 'slow')
         .audioCodec('copy')
         .output(this.outFile)
-        .on('end', resolve)
-        .on('error', reject)
+        .on('end', () => resolve())
+        .on('error', (err) => reject(err))
         .run();
     });
   }

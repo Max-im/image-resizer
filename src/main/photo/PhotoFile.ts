@@ -1,5 +1,5 @@
 import Jimp from 'jimp';
-import InputFile from './InputFile';
+import InputFile from '../file/InputFile';
 
 export default class PhotoFile extends InputFile {
   async handle(): Promise<void> {

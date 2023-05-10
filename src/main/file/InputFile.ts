@@ -11,8 +11,6 @@ export default abstract class InputFile {
   abstract handle(): void;
 
   constructor(srcFile: string, config: Config) {
-    // const ext = path.extname(srcFile);
-
     this.config = config;
     this.srcFile = srcFile;
     this.name = path.basename(srcFile);
