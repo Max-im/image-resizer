@@ -33,7 +33,7 @@
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
     "test": "jest",
-    "publish": "ts-node ./.erb/scripts/publish && gh-pages -d www"
+    "publish": "ts-node ./.erb/scripts/publish && git add . && git commit -m 'release' && gh-pages -d www"
   },
   "browserslist": [],
   "prettier": {
