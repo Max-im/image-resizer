@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
+// import ghpages from 'gh-pages';
 
 const archiver = require('archiver');
 
