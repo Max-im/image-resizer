@@ -15,6 +15,8 @@ const Compressing: FC = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>('Prepare');
   const [files, setFiles] = useState<number>(0);
+  const [currentFile, setSurrentFile] = useState<string>('');
+  const [subProgress, setSubProgress] = useState<number>(0);
   const [handled, setHandled] = useState<number>(0);
   const [completed, setCompleted] = useState<boolean>(false);
   const [errors, setErrors] = useState<number>(0);
@@ -45,14 +47,25 @@ const Compressing: FC = () => {
 
   window.electron.ipcRenderer.on('compress.completed', () => {
     setCompleted(true);
+    setSubProgress(0);
   });
 
   window.electron.ipcRenderer.on('compress.cancelled', () => {
     setTitle('Cancelled');
+    setSubProgress(0);
   });
 
   window.electron.ipcRenderer.on('compress.exception', (message) => {
     navigate(`/error?message=${message}`);
+  });
+
+  window.electron.ipcRenderer.on('compress.progress', (progress) => {
+    setSubProgress(progress as number);
+  });
+
+  window.electron.ipcRenderer.on('file.start', (name) => {
+    setSurrentFile(name as string);
+    setSubProgress(0);
   });
 
   const onDone = () => {
@@ -88,6 +101,8 @@ const Compressing: FC = () => {
           files={files}
           success={success}
           errors={errors}
+          subProgress={subProgress}
+          currentFile={currentFile}
         />
 
         <Box sx={{ width: '100%', mt: 2 }}>

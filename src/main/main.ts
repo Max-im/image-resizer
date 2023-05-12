@@ -75,9 +75,10 @@ ipcMain.on('compress.start', async (event, data: ISettings) => {
     const FileItem = FileFabric.getConstructor(path.extname(filePath));
 
     const file = new FileItem(filePath, config);
+    event.reply('file.start', file.name);
 
     try {
-      await file.handle();
+      await file.handle(event.reply);
       if (file.config.shouldDeleteSource) file.deleteSrcFile();
       event.reply('compress.file');
     } catch (err) {
@@ -92,6 +93,15 @@ if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
+
+ipcMain.on('app.init', async (event) => {
+  const packages = require('../../package.json');
+
+  event.reply('app.init', {
+    title: `${packages.build.productName} ${packages.version}`,
+    description: packages.description,
+  });
+});
 
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';

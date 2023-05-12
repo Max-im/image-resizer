@@ -1,10 +1,10 @@
 {
   "name": "media-compressor",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Image and Video Size Reducer",
   "license": "MIT",
   "author": {
-    "name": "Media Compressor",
+    "name": "Maksym Pozhydaiev",
     "email": "pogidaevmo@gmail.com"
   },
   "main": "./dist/main/main.js",

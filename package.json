@@ -1,5 +1,6 @@
 {
   "description": "Image and Video Size Reducer",
+  "version": "0.3.1",
   "keywords": [
     "electron",
     "react",

@@ -17,11 +17,12 @@ module.exports = {
     'no-new': 'off',
     'class-methods-use-this': 'off',
     'react/jsx-no-constructed-context-values': 'off',
+    'react/require-default-props': 'off',
     'lines-between-class-members': [
       'error',
       'always',
-      { 'exceptAfterSingleLine': true },
-    ]
+      { exceptAfterSingleLine: true },
+    ],
   },
   parserOptions: {
     ecmaVersion: 2020,

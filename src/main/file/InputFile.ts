@@ -8,7 +8,8 @@ export default abstract class InputFile {
   outFile: string;
   name: string;
 
-  abstract handle(): void;
+  // eslint-disable-next-line
+  abstract handle(cb?: any): void;
 
   constructor(srcFile: string, config: Config) {
     this.config = config;

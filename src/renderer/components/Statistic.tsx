@@ -14,13 +14,27 @@ interface IStatistic {
   handled: number;
   success: number;
   errors: number;
+  subProgress: number;
+  currentFile: string;
 }
 
-const Statistic: FC<IStatistic> = ({ files, handled, success, errors }) => {
+const rowStyle = { '&:last-child td, &:last-child th': { border: 0 } };
+
+const Statistic: FC<IStatistic> = ({
+  files,
+  handled,
+  success,
+  errors,
+  subProgress,
+  currentFile,
+}) => {
   const data = [
     {
       title: 'Handled',
-      value: `${handled} (${((handled / files) * 100).toFixed()}%)`,
+      value: `${handled} from ${files} (${(
+        (handled / files) *
+        100
+      ).toFixed()}%)`,
     },
     {
       title: 'Success',
@@ -31,6 +45,10 @@ const Statistic: FC<IStatistic> = ({ files, handled, success, errors }) => {
       value: `${errors} (${((errors / files) * 100).toFixed()}%)`,
     },
   ];
+
+  const subProgressData = subProgress
+    ? { title: `${currentFile} Compressing...`, value: `${subProgress}%` }
+    : null;
 
   return (
     <TableContainer component={Paper}>
@@ -43,16 +61,21 @@ const Statistic: FC<IStatistic> = ({ files, handled, success, errors }) => {
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow
-              key={row.title}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
+            <TableRow key={row.title} sx={rowStyle}>
               <TableCell component="th" scope="row">
                 {row.title}
               </TableCell>
               <TableCell align="right">{row.value}</TableCell>
             </TableRow>
           ))}
+          {subProgressData && (
+            <TableRow sx={rowStyle}>
+              <TableCell component="th" scope="row">
+                {subProgressData.title}
+              </TableCell>
+              <TableCell align="right">{subProgressData.value}</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
