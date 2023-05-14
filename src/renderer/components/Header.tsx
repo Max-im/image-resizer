@@ -1,39 +1,31 @@
-import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
+import React, { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Container, Tabs, Tab } from '@mui/material';
 import routes from '../routes/routes';
 import '../styles/header.css';
 
 const Header: FC = () => {
+  const navigate = useNavigate();
+  const [value, setValue] = useState<number>(0);
+
+  const menuRoutes = routes.filter((route) => route.inMenu);
+
+  const onNavigate = (e: Event, val: number) => {
+    setValue(val);
+    navigate(menuRoutes[val].url);
+  };
+
   return (
-    <AppBar position="static" sx={{ bgcolor: '#ddd' }}>
+    <Box position="static" sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Container maxWidth="md" sx={{ mt: 1, mb: 1 }}>
-        <Box sx={{ flexGrow: 1, display: 'flex' }}>
-          {routes
-            .filter((route) => route.inMenu)
-            .map((route) => (
-              <NavLink
-                key={route.url}
-                to={route.url}
-                className={({ isActive }) =>
-                  isActive ? 'navLink__active navLink' : 'navLink'
-                }
-              >
-                <Button
-                  variant="outlined"
-                  size="small"
-                  sx={{ display: 'block', bgcolor: 'white' }}
-                >
-                  {route.title}
-                </Button>
-              </NavLink>
-            ))}
-        </Box>
+        {/* @ts-ignore */}
+        <Tabs value={value} onChange={onNavigate}>
+          {menuRoutes.map((route) => (
+            <Tab label={route.title} />
+          ))}
+        </Tabs>
       </Container>
-    </AppBar>
+    </Box>
   );
 };
 

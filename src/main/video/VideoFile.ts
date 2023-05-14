@@ -1,8 +1,7 @@
+import { getVideoDurationInSeconds } from 'get-video-duration';
 import ffmpeg from './provider';
 import InputFile from '../file/InputFile';
 // @ts-ignore
-import { getVideoDurationInSeconds } from 'get-video-duration';
-
 
 export default class VideoFile extends InputFile {
   async handle(reply: any): Promise<void> {
