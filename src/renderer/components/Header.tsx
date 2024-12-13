@@ -21,7 +21,7 @@ const Header: FC = () => {
         {/* @ts-ignore */}
         <Tabs value={value} onChange={onNavigate}>
           {menuRoutes.map((route) => (
-            <Tab label={route.title} />
+            <Tab key={route.title} label={route.title} />
           ))}
         </Tabs>
       </Container>
