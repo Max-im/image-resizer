@@ -13,7 +13,7 @@ export default function Header() {
           <a href="#download" className="hover:text-blue-600">Download</a>
           <a href="#contact" className="hover:text-blue-600">Contact</a>
         </nav>
-        <a href="#download" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Download Now</a>
+        <a href="#download" className="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-md ">Download Now</a>
       </div>
     </header>
   )
