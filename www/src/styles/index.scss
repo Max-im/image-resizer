@@ -8,6 +8,7 @@
   --bgcolor: #F7EFFF;
   --accent: #FFDE76;
   --accent-blue: #DDBAFF;
+  --accent-dark: #857C83;
 }
 
 body {
@@ -45,6 +46,10 @@ main {
 
 .bg-accent-blue {
   background-color: var(--accent-blue);
+}
+
+.bg-accent-dark {
+  background-color: var(--accent-dark);
 }
 
 .bg-body {
