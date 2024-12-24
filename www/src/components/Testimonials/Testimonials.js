@@ -1,6 +1,8 @@
 import user1 from "../../assets/user1.jpg";
 import user2 from "../../assets/user2.jpg";
 import user3 from "../../assets/user3.jpg";
+import blob from '../../assets/blob-blue.svg';
+import styles from './Testimonials.module.css';
 
 export default function Testimonials() {
   const testimonials = [
@@ -22,21 +24,20 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="py-16 bg-gray-200 rounded-xl px-8">
+    <section id="testimonials" className="py-16 bg-gray-200 rounded-xl px-8 mb-5 relative overflow-hidden">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-8">What Our Users Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <h2 className="text-3xl font-bold mb-8 relative z-10">What Our Users Say</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
           {testimonials.map((testimonial, index) => (
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-center space-x-4 mb-4">
                 <img
                   src={testimonial.img}
                   alt={testimonial.user}
-                  className="w-12 h-12 rounded-full"
+                  className={`w-12 h-12 rounded-full ${styles.avatar}`}
                 />
                 <div className="text-left">
                   <h3 className="text-lg font-semibold">{testimonial.user}</h3>
-                  <p className="text-sm text-gray-500">{testimonial.role}</p>
                   <div className="flex justify-start">
                     {renderStars(testimonial.rate)}
                   </div>
@@ -46,6 +47,7 @@ export default function Testimonials() {
             </div>))}
         </div>
       </div>
+      <img src={blob} alt="" className={styles.blob} />
     </section >
   )
 }
