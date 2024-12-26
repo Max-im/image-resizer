@@ -10,7 +10,7 @@ export default function Hero() {
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Compress <br /> Media Files with Ease!</h1>
             <p className="text-lg mb-4 md:mb-9">Reduce file sizes without compromising quality.</p>
             <div className="flex space-x-2 md:space-x-4">
-              <a href="/mediaCompressor.zip" download className="bg-black hover:bg-gray-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-md text-lg">Download for Free</a>
+              <a href="https://max-im.github.io/media-compressor/mediaCompressor.zip" download className="bg-black hover:bg-gray-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-md text-lg">Download for Free</a>
               <a href="#aboutus" className="bg-white hover:bg-gray-100 border px-3 md:px-6 py-2 md:py-3 rounded-md text-lg">Learn More</a>
             </div>
 
