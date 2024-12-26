@@ -1,3 +1,4 @@
+import { useInView } from 'react-intersection-observer';
 import user1 from "../../assets/user1.jpg";
 import user2 from "../../assets/user2.jpg";
 import user3 from "../../assets/user3.jpg";
@@ -23,14 +24,19 @@ export default function Testimonials() {
     return stars;
   };
 
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
   return (
-    <section id="testimonials" className="py-16 bg-gray-200 rounded-xl px-8 mb-5 relative overflow-hidden">
+    <section id="testimonials" className="py-4 md:py-12 bg-gray-200 rounded-xl px-4 md:px-8 mb-5 relative overflow-hidden">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-8 relative z-10">What Our Users Say</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 relative z-10">What Our Users Say</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center space-x-4 mb-4">
+            <div key={index} className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+              <div className="flex items-center space-x-4 mb-2 md:mb-4">
                 <img
                   src={testimonial.img}
                   alt={testimonial.user}
@@ -47,7 +53,8 @@ export default function Testimonials() {
             </div>))}
         </div>
       </div>
-      <img src={blob} alt="" className={styles.blob} />
+      <div ref={ref}></div>
+      <img src={blob} alt="" className={`${inView ? styles.blob_active : styles.blob_basic} ${styles.blob}`} />
     </section >
   )
 }

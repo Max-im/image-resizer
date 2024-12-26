@@ -4,9 +4,22 @@
 }
 
 
+
 .blob {
   position: absolute;
-  top: -40%;
-  left: -30%;
+  top: 0%;
+  left: 0%;
   z-index: 0;
+  width: 100%;
+  transition: all 2s ease-in-out;
+}
+
+.blob_basic {
+  transform: scale(0.2);
+  transition: all 2s ease-in-out;
+}
+
+.blob_active {
+  transform: scale(10);
+  transition: all 2s ease-in-out;
 }

@@ -2,7 +2,13 @@
   padding-block: 1rem;
   border-radius: 1.2rem;
   position: relative;
-  height: 24rem;
+  height: 30rem;
+}
+
+@media (min-width: 768px) {
+  .card {
+    height: 28rem;
+  }
 }
 
 .inner {
@@ -28,8 +34,8 @@
   justify-content: space-between;
   padding: 0.625rem 0 0.625rem 0.625rem;
   border-top-right-radius: 0.5rem;
-  width: 350px;
-  height: 200px;
+  width: 200px;
+  height: 150px;
 
   &::before {
     position: absolute;
@@ -53,5 +59,32 @@
     height: 1.2rem;
     border-bottom-right-radius: 1rem;
     box-shadow: 0.313rem 0.313rem 0px 0.313rem var(--bgcolor);
+  }
+}
+
+
+.img {
+  position: relative;
+  opacity: 0;
+  animation: imgAnimation 1s ease-in-out forwards;
+  top: 10%;
+}
+
+@media (min-width: 768px) {
+  .tag {
+    width: 350px;
+    height: 200px;
+  }
+}
+
+
+@keyframes imgAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+    top: 5%;
   }
 }

@@ -11,13 +11,13 @@ export default function Why() {
   ]
 
   return (
-    <section id="why-desktop" className="py-16 bg-white rounded-xl px-8 mb-5">
+    <section id="whydesktop" className="py-4 md:py-12 bg-white rounded-xl px-4 md:px-8 mb-5">
       <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-8">Why Choose a Desktop App?</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Why Choose a Desktop App?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {items.map((item, index) => (
             <div key={index}>
-              <div className="bg-accent-blue p-6 rounded-lg shadow-md">
+              <div className="bg-accent-blue p-4 md:p-6 rounded-lg shadow-md">
                 <div className='bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 p-2 border-4 overflow-hidden'>
                   <img src={item.img} alt="Security" className="w-16 h-16 mx-auto w-5/6" />
                 </div>

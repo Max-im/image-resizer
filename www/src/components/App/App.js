@@ -8,14 +8,14 @@ import Why from "../Why";
 
 function App() {
   return (
-    <div className="font-sans text-gray-800">
+    <div className="font-sans text-gray-800 min-w-80">
       <Header />
       <main className="max-w-5xl mx-auto">
         <Hero />
         <About />
         <Why />
         <Testimonials />
-        <Demo />
+        {/* <Demo /> */}
       </main>
       <Footer />
     </div>
