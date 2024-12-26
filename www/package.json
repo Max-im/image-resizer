@@ -20,7 +20,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "generate-sitemap": "npx sitemap-generator-cli https://max-im.github.io/media-compressor -o ./public/sitemap.xml"
   },
   "eslintConfig": {
     "extends": [
