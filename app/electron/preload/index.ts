@@ -1,4 +1,4 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { ipcRenderer, contextBridge, dialog } from 'electron';
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -21,6 +21,10 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // You can expose other APTs you need here.
   // ...
+})
+
+contextBridge.exposeInMainWorld('dialog', {
+  showOpenDialog: (...args: Parameters<typeof dialog.showOpenDialog>) => dialog.showOpenDialog(...args)
 })
 
 // --------- Preload scripts loading ---------
@@ -109,10 +113,10 @@ function useLoading() {
 // ----------------------------------------------------------------------
 
 const { appendLoading, removeLoading } = useLoading()
-domReady().then(appendLoading)
+domReady().then(appendLoading);
 
 window.onmessage = (ev) => {
-  ev.data.payload === 'removeLoading' && removeLoading()
+  ev.data.payload === 'removeLoading' && removeLoading();
 }
 
-setTimeout(removeLoading, 4999)
+setTimeout(removeLoading, 4999);

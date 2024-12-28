@@ -2,7 +2,7 @@
   "name": "media-compressor",
   "version": "0.4.0",
   "main": "dist-electron/main/index.js",
-  "description": "This is a simple electron app that allows you to reduce size of your media files easly.",
+  "description": "This is an electron app that allows you to reduce size of your media files easly.",
   "author": "Maksym Pozhydaiev <pogidaevmo@gmail.com>",
   "license": "MIT",
   "private": true,
