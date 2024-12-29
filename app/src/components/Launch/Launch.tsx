@@ -1,5 +1,4 @@
-import folder from '../../assets/folder.svg';
-import styles from './UploadMedia.module.css';
+import start from '../../assets/start.png';
 
 interface Props {
   showError: (msg: string) => void;
@@ -24,9 +23,10 @@ export default function Launch({ showError, success, media }: Props) {
   return (
     <>
       <h3>Compress</h3>
+      <p>Selected files: {media.length}</p>
       <button className="bg-black hover:bg-gray-700 text-white border-none text-base py-2 px-3 cursor-pointer flex items-center" onClick={handleUpload}>
-        <img src={folder} alt="icon" width="24" height="24" className="mr-1" />
         Start
+        <img src={start} alt="icon" width="24" height="24" className="ml-1" />
       </button>
     </>
   )
