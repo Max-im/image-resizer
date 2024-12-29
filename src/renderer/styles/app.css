@@ -1,7 +1,0 @@
-#root {
-    height: calc(100vh - 50px);
-}
-
-.app__container {
-    height: calc(100% - 100px);
-}

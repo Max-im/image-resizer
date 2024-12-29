@@ -63,3 +63,7 @@
   }
 }
 
+
+.operationbg {
+  background: -webkit-linear-gradient(-50deg, rgb(151, 199, 148), rgb(18, 101, 108));
+}
