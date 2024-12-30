@@ -29,9 +29,9 @@ function App() {
   return (
     <div className='App'>
       <Header />
-      <main className="flex nowrap w-full bg-gray-200">
+      <main className="main operationbg flex nowrap w-full bg-gray-200">
         <div className="flex-[1.5] flex flex-col">
-          <div className={`operationbg block grow-1`}>
+          <div className={`block grow-1`}>
             {step === 1 && <UploadMedia success={saveMedia} showError={showError} />}
             {step === 2 && <Launch success={nextStep} showError={showError} back={prevStep} media={media} />}
           </div>

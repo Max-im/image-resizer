@@ -2,6 +2,20 @@
   max-width: 1024px;
   width: 100%;
   margin: 0 auto;
+  justify-content: center;
+  height: 100%;
+  display: flex;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1
 }
 
 .block {
@@ -16,14 +30,6 @@
     font-weight: 600;
   }
 }
-
-.back1 { background: -webkit-linear-gradient(-50deg, rgb(174, 147, 187), rgb(166, 61, 113)); }
-.back3 { background: -webkit-linear-gradient(-50deg, rgb(128, 143, 182), rgb(55, 63, 82)); }
-.back4 { background: -webkit-linear-gradient(-50deg, rgb(202, 162, 133), rgb(192, 191, 60)); }
-.back5 { background: -webkit-linear-gradient(-50deg, rgb(147, 176, 187), rgb(61, 122, 166)); }
-.back6 { background: -webkit-linear-gradient(-50deg, rgb(187, 167, 147), rgb(166, 93, 61)); }
-.back7 { background: -webkit-linear-gradient(-50deg, rgb(157, 147, 187), rgb(102, 89, 161)); }
-.back10 { background: -webkit-linear-gradient(-50deg, rgb(147, 187, 149), rgb(90, 119, 78)); }
 
 .box {
   height: 116px;
