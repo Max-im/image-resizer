@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { dialog, ipcMain } from "electron";
+import { MediaFile } from '../../models/MediaFile';
 
 const supportedFiles = ['mp4'];
 
@@ -46,8 +47,8 @@ async function openFolderSelection() {
     if (!mediaFiles.length) {
         throw new Error('No supported media files found');
     }
-    
-    return mediaFiles;
+
+    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size));
 }
 
 ipcMain.handle('selectfolder', openFolderSelection);

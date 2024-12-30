@@ -1,15 +1,15 @@
-import folder from '../../assets/folder.svg';
-import styles from './UploadMedia.module.css';
+import { IMediaFile } from '@/../models/MediaFile';
+import folder from '@/assets/folder.svg';
 
 interface Props {
   showError: (msg: string) => void;
-  success: (media: string[]) => void;
+  success: (media: IMediaFile[]) => void;
 }
 
 export default function UploadMedia({ showError, success }: Props) {
   const handleUpload = async () => {
     try {
-      const result = await window.ipcRenderer.invoke('selectfolder');
+      const result = await window.ipcRenderer.invoke('selectfolder') as IMediaFile[];
       if (result) {
         success(result);
       }
