@@ -18,7 +18,7 @@ function App() {
   
   const prevStep = () => {
     setStep(step - 1);
-    saveMedia([]);
+    setMedia([]);
   }
   const showError = (msg: string) => {
     console.error(msg)
@@ -40,7 +40,7 @@ function App() {
             {step === 3 && <Compressing success={nextStep} showError={showError} back={prevStep} media={media} />}
           </div>
         </div>
-        <Aside />
+        {step !== 3 && <Aside />}
       </main>
       <Footer />
     </div>

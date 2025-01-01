@@ -1,5 +1,5 @@
 import { IMediaFile } from '@/../models/MediaFile';
-import folder from '@/assets/folder.svg';
+import folder from '@/assets/folder.png';
 
 interface Props {
   showError: (msg: string) => void;
@@ -26,8 +26,8 @@ export default function UploadMedia({ showError, success }: Props) {
     <>
       <h3>Upload Media</h3>
       <button className="bg-black hover:bg-gray-700 text-white border-none text-base py-2 px-3 cursor-pointer flex items-center" onClick={handleUpload}>
-        <img src={folder} alt="icon" width="24" height="24" className="mr-1" />
         Select Folder
+        <img src={folder} alt="icon" width="18" height="18" className="ml-3" />
       </button>
     </>
   )
