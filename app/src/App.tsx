@@ -4,13 +4,15 @@ import Footer from '@/components/Footer'
 import Aside from '@/components/Aside'
 import UploadMedia from '@/components/UploadMedia';
 import Launch from '@/components/Launch';
-import Compressing from './components/Compressing';
+import Compressing from '@/components/Compressing';
+import ErrorMessage from '@/components/ErrorMessage';
 import { IMediaFile } from 'models/MediaFile';
 import './App.css';
 
 function App() {
   const [step, setStep] = useState(1);
   const [media, setMedia] = useState<IMediaFile[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const nextStep = () => {
     setStep(step + 1);
@@ -21,8 +23,12 @@ function App() {
     setMedia([]);
   }
   const showError = (msg: string) => {
-    console.error(msg)
+    setError(msg);
   }
+
+  const clearError = () => {
+    setError(null);
+  };
 
   const saveMedia = (media: IMediaFile[]) => {
     nextStep();
@@ -43,6 +49,7 @@ function App() {
         {step !== 3 && <Aside />}
       </main>
       <Footer />
+      <ErrorMessage message={error} clearError={clearError} />
     </div>
   )
 }

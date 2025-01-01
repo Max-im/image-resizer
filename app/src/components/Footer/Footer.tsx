@@ -4,7 +4,6 @@ export default function Footer() {
   return (
     <footer className={`${styles.bg} block`}>
       <div className="max-w-4xl mx-auto text-center">
-        <h3 className="text-xl font-semibold text-white mb-4">Footer</h3>
         <nav>
           <ul className="flex justify-center space-x-6 list-none">
             <li>
