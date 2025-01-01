@@ -1,3 +1,8 @@
 .bg { 
     background: -webkit-linear-gradient(-50deg, rgb(189, 229, 208), rgb(18, 60, 108)); 
 }
+.version {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 0.5rem 1rem;
+}
