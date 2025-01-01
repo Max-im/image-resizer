@@ -1,5 +1,6 @@
 import { IMediaFile } from 'models/MediaFile';
 import start from '../../assets/start.png';
+import styles from './Launch.module.css';
 
 interface Props {
   showError: (msg: string) => void;
@@ -18,19 +19,21 @@ function formatSize(size: number): string {
 export default function Launch({ showError, success, media, back }: Props) {
   return (
     <>
-      <h3>Compress Files</h3>
-      <button
-        onClick={back}
-        className="text-sm text-blue-500 hover:text-blue-700 underline mb-4"
-      >
-        &larr; Back
-      </button>
+      <div className="flex justify-between items-center">
+        <h3>Compress Files</h3>
+        <p
+          onClick={back}
+          className={`text-sm ${styles.back} cursor-pointer`}
+        >
+          &larr; Back
+        </p>
+      </div>
 
       <p className="mb-4">
         <span className="font-medium">Files to compress:</span> ({media.length})
       </p>
 
-      <ul className="space-y-2 bg-white p-0 mb-6 list-none">
+      <ul className="bg-white p-0 mb-4 list-none">
         {media.map((file, index) => (
           <li
             key={index}

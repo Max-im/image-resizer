@@ -18,7 +18,7 @@ export default function Header() {
             <img src={logo} className="mr-2" alt="logo" width="32" height="32" />
             <h1>Media Compressor</h1>
           </div>
-          <div className={`${styles.version} text-right`}>v: {version}</div>
+          <div className={`${styles.version} text-sm text-right`}>v: {version}</div>
         </div>
         <h4 className="p-0 m-0 mb-2">{description}</h4>
     </header>
