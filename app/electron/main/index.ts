@@ -5,8 +5,8 @@ import path from 'node:path'
 import os from 'node:os'
 import { update } from './update';
 import './selectfolder';
+import './compress';
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 

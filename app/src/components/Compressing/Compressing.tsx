@@ -1,5 +1,10 @@
-import { IMediaFile } from '@/../models/MediaFile';
 import { useEffect, useState } from 'react';
+import BackBtn from '@/components/BackBtn';
+import { formatSize } from '@/utils/size';
+import { IMediaFile } from '@/../models/MediaFile';
+import { IPercentData } from '@/../models/PercentData';
+import errorImg from '@/assets/error.png';
+import successImg from '@/assets/success.png';
 
 interface Props {
   showError: (msg: string) => void;
@@ -8,34 +13,107 @@ interface Props {
   media: IMediaFile[];
 }
 
-export default function Compressing({ showError, success, media }: Props) {
-  const [progress, setProgress] = useState(0);
+export default function Compressing({ showError, success, media, back }: Props) {
+  const [done, setDone] = useState(false);
+  const [items, setItems] = useState(media.map(item => ({ ...item, progress: 0, compressedSize: 0, success: false, error: false, done: false })));
+
+  
+
+  const startCompress = async () => {
+    try {
+      await window.ipcRenderer.invoke('compress', media);
+    } catch (error) {
+      let message = 'An error occurred while compressing files';
+      if (error instanceof Error) {
+        message = error.message;
+      }
+      showError(message);
+    }
+  };
+
+  const updateProgress = (e: Electron.IpcRendererEvent, data: IPercentData) => {
+    setItems(prev => {
+      return prev.map(item => {
+        if (item.path === data.filePath) {
+          return { ...item, progress: data.percent };
+        }
+        return item;
+      });
+    });
+  }
+
+  const onFileEnd = (e: Electron.IpcRendererEvent, filePath: string) => {
+    setItems(prev => {
+      return prev.map(item => {
+        if (item.path === filePath) {
+          return { ...item, done: true, success: true };
+        }
+        return item;
+      });
+    });
+  }
+
+  const onCompleted = () => {
+    setDone(true);
+  }
+
+  const onShowError = (e: Electron.IpcRendererEvent, data: { filePath: string, message: string }) => {
+    setItems(prev => {
+      return prev.map(item => {
+        if (item.path === data.filePath) {
+          return { ...item, done: true, error: true };
+        }
+        return item;
+      });
+    });
+    showError(data.message);
+  }
 
   useEffect(() => {
-    const compress = async () => {
-      try {
-        for(const file of media) {
-          const isSuccess = await window.ipcRenderer.invoke('compress', file.path);
-          if (isSuccess) {
-            setProgress(progress + 1);
-          }
-        }
-        success();
-      } catch (error) {
-        let message = 'An error occurred while compressing files';
-        if (error instanceof Error) {
-          message = error.message;
-        }
-        showError(message);
-      }
-    };
-    compress();
+    window.ipcRenderer.on('progress', updateProgress);
+    window.ipcRenderer.on('fileEnd', onFileEnd);
+    window.ipcRenderer.on('completed', onCompleted);
+    window.ipcRenderer.on('fileError', onShowError);
+    startCompress();
+
+    return () => {
+      window.ipcRenderer.off('progress', updateProgress);
+      window.ipcRenderer.off('fileEnd', onFileEnd);
+      window.ipcRenderer.off('completed', onCompleted);
+      window.ipcRenderer.off('fileError', onShowError);
+    }
   }, []);
+
+  const onCancel = () => {
+    window.ipcRenderer.invoke('cancelCompress');
+    back();
+  }
 
   return (
     <>
-      <h3>Compressing...</h3>
-      {progress > 0 && <p>{progress / media.length * 100}%</p>}
+      <div className="flex justify-between items-center">
+        <h3>{done ? 'Done' : 'Compressing...'}</h3>
+        {done ? <BackBtn action={success} text="OK" /> : <BackBtn action={onCancel} text="Cancel" />}
+      </div>
+
+      <ul className="p-0 mb-4 list-none">
+        {items.map((file, index) => (
+          <li
+            key={index}
+            className="bg-white px-3 py-1 border border-gray-200 flex justify-between items-center relative mb-2"
+          >
+            <span className="font-medium text-gray-800 relative z-10">{file.name}</span>
+            <div className="text-gray-800 text-sm flex relative z-10 align-center">
+              <span className="mr-2">{formatSize(file.size)}</span>
+              {file.error && <img src={errorImg} alt='error' width="18" height="18" />}
+              {file.success && <img src={successImg} alt='success' width="18" height="18" />}
+
+            </div>
+            <span className={`absolute bg-green-600 ease-in-out h-full top-0 left-0 z-[0]`} style={{ width: file.progress + '%' }}></span>
+            <span className={`absolute h-full mt-1 text-green-400 w-full top-0 left-0 z-[0] flex align-center justify-center`}>{Math.round(file.progress)}%</span>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

@@ -2,8 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { dialog, ipcMain } from "electron";
 import { MediaFile } from '../../models/MediaFile';
+import { getOutputPath } from './util/output';
 
-const supportedFiles = ['mp4'];
+const supportedFiles = ['mp4','mov','avi','wmv','flv','webm', 'mkv'];
 
 function readDirFiles(folderPath: string): string[] {
     if (!fs.lstatSync(folderPath).isDirectory()) {
@@ -31,7 +32,8 @@ async function openFolderSelection() {
         throw new Error('No file path selected');
     }
 
-    const media = readDirFiles(data.filePaths[0]);
+    const dirPath = data.filePaths[0];
+    const media = readDirFiles(dirPath);
     if(!media.length) {
         throw new Error('The folder is empty');
     }
@@ -48,7 +50,7 @@ async function openFolderSelection() {
         throw new Error('No supported media files found');
     }
 
-    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size));
+    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size, getOutputPath(file)));
 }
 
 ipcMain.handle('selectfolder', openFolderSelection);

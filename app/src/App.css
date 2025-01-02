@@ -21,10 +21,10 @@
 .block {
   padding: 1rem 1.5rem;
   color: #fff;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   text-align: left;
-
+  
   h3 {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     font-size: 16px;
     text-transform: uppercase;
     font-weight: 600;

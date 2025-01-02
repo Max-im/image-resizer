@@ -1,6 +1,8 @@
 import { IMediaFile } from 'models/MediaFile';
-import start from '../../assets/start.png';
+import start from '@/assets/start.png';
 import styles from './Launch.module.css';
+import { formatSize } from '@/utils/size';
+import BackBtn from '../BackBtn';
 
 interface Props {
   showError: (msg: string) => void;
@@ -9,35 +11,23 @@ interface Props {
   media: IMediaFile[];
 }
 
-function formatSize(size: number): string {
-  if (size < 1024) return `${size} B`;
-  if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-  if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-}
-
 export default function Launch({ showError, success, media, back }: Props) {
   return (
     <>
       <div className="flex justify-between items-center">
         <h3>Compress Files</h3>
-        <p
-          onClick={back}
-          className={`text-sm ${styles.back} cursor-pointer`}
-        >
-          &larr; Back
-        </p>
+        <BackBtn action={back} />
       </div>
 
       <p className="mb-4">
         <span className="font-medium">Files to compress:</span> ({media.length})
       </p>
 
-      <ul className="bg-white p-0 mb-4 list-none">
+      <ul className="p-0 mb-4 list-none">
         {media.map((file, index) => (
           <li
             key={index}
-            className="px-3 py-1 border border-gray-200 flex justify-between items-center"
+            className="bg-white px-3 py-1 border border-gray-200 flex justify-between items-center mb-2"
           >
             <span className="font-medium text-gray-800">{file.name}</span>
             <span className="text-gray-500 text-sm ml-2">({formatSize(file.size)})</span>

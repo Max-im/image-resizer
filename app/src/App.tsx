@@ -14,16 +14,19 @@ function App() {
   const [media, setMedia] = useState<IMediaFile[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const nextStep = () => {
-    setStep(step + 1);
-  }
-  
-  const prevStep = () => {
-    setStep(step - 1);
+  const init = () => {
     setMedia([]);
+    toStep(1);
+    setError(null);
   }
+
   const showError = (msg: string) => {
+    console.error(msg);
     setError(msg);
+  }
+
+  const toStep = (step: number) => {
+    setStep(step);
   }
 
   const clearError = () => {
@@ -31,8 +34,8 @@ function App() {
   };
 
   const saveMedia = (media: IMediaFile[]) => {
-    nextStep();
     setMedia(media);
+    setStep(2);
   }
 
   return (
@@ -41,9 +44,9 @@ function App() {
       <main className="main operationbg flex nowrap w-full bg-gray-200">
         <div className="flex-[1.5] flex flex-col">
           <div className={`block grow-1`}>
-            {step === 1 && <UploadMedia success={saveMedia} showError={showError} />}
-            {step === 2 && <Launch success={nextStep} showError={showError} back={prevStep} media={media} />}
-            {step === 3 && <Compressing success={nextStep} showError={showError} back={prevStep} media={media} />}
+            {step === 1 && <UploadMedia success={(saveMedia)} showError={showError} />}
+            {step === 2 && <Launch success={() => toStep(3)} showError={showError} back={() => init()} media={media} />}
+            {step === 3 && <Compressing success={() => init()} showError={showError} back={() => toStep(2)} media={media} />}
           </div>
         </div>
         {step !== 3 && <Aside />}
