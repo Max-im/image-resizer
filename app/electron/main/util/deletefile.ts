@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 const unlink = promisify(fs.unlink);
 
 
-const deleteFileWithRetry = async (filePath: string, retries = 5, delay = 1000): Promise<void> => {
+export const deleteFileWithRetry = async (filePath: string, retries = 5, delay = 1000): Promise<void> => {
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
       await unlink(filePath);
@@ -21,5 +21,3 @@ const deleteFileWithRetry = async (filePath: string, retries = 5, delay = 1000):
     }
   }
 };
-
-export default deleteFileWithRetry;

@@ -34,7 +34,7 @@ nvm use 20
 - [x] settings
 - [x] compressed file size
 - [x] icons
-- [ ] cancel logic
+- [x] cancel logic
 - [ ] readme
 - [ ] buttons layout
 - [ ] min width, min height

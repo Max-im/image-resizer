@@ -1,17 +1,18 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import ffmpeg from 'fluent-ffmpeg';
-import ffmpegStatic from 'ffmpeg-static';
+import { deleteFileWithRetry } from './util/deletefile';
+import { ensureOutputDir } from './util/output';
+import { getVideoDuration } from './util/videoduration';
+import { addVideoStatic } from './util/videostatic';
 import { IMediaFile } from 'models/MediaFile';
 import { IPercentData } from 'models/PercentData';
 import { ISettings } from 'models/Settings';
-import { ensureOutputDir } from './util/output';
-import deleteFileWithRetry from './util/deletefile';
-import { getVideoDuration } from './util/videoduration';
 
 const FILE_END = 'fileEnd';
 const COMPLETED = 'completed';
+
+let isCancelled = false;
 
 interface IProgressData {
     frames: number;
@@ -25,42 +26,11 @@ interface IProgressData {
 async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
     const duration = await getVideoDuration(file.path);
 
-    function onProgress(progress: IProgressData) {
-        let { percent } = progress;
-        let result = 0;
-
-        if (percent) {
-            result = percent > 100 ? 100 : percent;
-        } else if (progress.timemark && duration) {
-            const [hours, min, sec] = progress.timemark.split(':');
-            const currentTime = Number(sec) + Number(min) * 60 + Number(hours) * 360;
-            result = currentTime / duration * 100;
-        }
-        const payload: IPercentData = { filePath: file.path, percent: result };
-        event.sender.send('progress', payload);
-    }
-
     return new Promise((resolve, reject) => {
-        let ffmpegPath;
-        if (process.env.NODE_ENV === 'production') {
-            ffmpegPath = path.join(
-                process.resourcesPath,
-                'app.asar.unpacked',
-                'node_modules',
-                'ffmpeg-static',
-                'ffmpeg.exe'
-            );
-        } else {
-            ffmpegPath = ffmpegStatic;
-        }
-
-        if (ffmpegPath) {
-            ffmpeg.setFfmpegPath(ffmpegPath);
-        }
-
+        addVideoStatic();
         ensureOutputDir(file.outputPath);
 
-        ffmpeg(file.path)
+        const ffmpegProcess = ffmpeg(file.path)
             .format('avi')
             .videoCodec('libx264')
             .addOption('-crf', '23')
@@ -69,13 +39,39 @@ async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
             .output(file.outputPath)
             .on('end', () => resolve(FILE_END))
             .on('error', (err) => reject(err.message))
-            .on('progress', onProgress)
-            .run();
+            .on('progress', onProgress);
+
+            const ffmpegProc = ffmpegProcess;
+
+            ffmpegProcess.run();
+
+            function onProgress(progress: IProgressData) {
+                if (isCancelled) {
+                    ffmpegProc.kill('SIGKILL');
+                    return;
+                }
+                let { percent } = progress;
+                let result = 0;
+        
+                if (percent) {
+                    result = percent > 100 ? 100 : percent;
+                } else if (progress.timemark && duration) {
+                    const [hours, min, sec] = progress.timemark.split(':');
+                    const currentTime = Number(sec) + Number(min) * 60 + Number(hours) * 360;
+                    result = currentTime / duration * 100;
+                }
+                const payload: IPercentData = { filePath: file.path, percent: result };
+                event.sender.send('progress', payload);
+            }
     });
 }
 
 async function onCompress(event: IpcMainInvokeEvent, { media, settings }: { media: IMediaFile[], settings: ISettings }) {
+    isCancelled = false;
     for (const file of media) {
+        if (isCancelled) {
+            break;
+        }
         try {
             await onCompressFile(event, file) as string;
             if (settings.deleteSrc) {
@@ -95,4 +91,10 @@ async function onCompress(event: IpcMainInvokeEvent, { media, settings }: { medi
     event.sender.send(COMPLETED);
 }
 
+
+function onCancel() {
+    isCancelled = true;
+}
+
 ipcMain.handle('compress', onCompress);
+ipcMain.handle('cancelCompress', onCancel);
