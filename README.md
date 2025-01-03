@@ -29,3 +29,13 @@ This project is licensed under the MIT License.
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] & printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 nvm use 20
+
+
+- [ ] icons
+- [ ] readme
+- [x] settings
+- [ ] buttons layout
+- [ ] cancel logic
+- [ ] min width, min height
+- [ ] compressed size
+- [ ] photo compressing

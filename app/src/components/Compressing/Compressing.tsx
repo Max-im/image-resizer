@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
 import BackBtn from '@/components/BackBtn';
 import { formatSize } from '@/utils/size';
-import { IMediaFile } from '@/../models/MediaFile';
-import { IPercentData } from '@/../models/PercentData';
 import errorImg from '@/assets/error.png';
 import successImg from '@/assets/success.png';
+import { IMediaFile } from 'models/MediaFile';
+import { IPercentData } from 'models/PercentData';
+import { ISettings } from 'models/Settings';
 
 interface Props {
   showError: (msg: string) => void;
   success: () => void;
   back: () => void;
   media: IMediaFile[];
+  settings: ISettings;
 }
 
-export default function Compressing({ showError, success, media, back }: Props) {
+export default function Compressing({ showError, success, media, back, settings }: Props) {
   const [done, setDone] = useState(false);
   const [items, setItems] = useState(media.map(item => ({ ...item, progress: 0, compressedSize: 0, success: false, error: false, done: false })));
 
   const startCompress = async () => {
     try {
-      await window.ipcRenderer.invoke('compress', media);
+      await window.ipcRenderer.invoke('compress', {media, settings});
     } catch (error) {
       let message = 'An error occurred while compressing files';
       if (error instanceof Error) {
@@ -113,7 +115,7 @@ export default function Compressing({ showError, success, media, back }: Props) 
               {file.success && <img src={successImg} alt='success' width="18" height="18" />}
 
             </div>
-            <span className={`absolute bg-green-600 ease-in-out h-full top-0 left-0 z-[0]`} style={{ width: file.progress + '%' }}></span>
+            <span className={`absolute bg-green-600 ease-in-out h-full top-0 left-0 z-[0]`} style={{ width: file.progress + '%', transition: 'width 0.5s' }}></span>
             <span className={`absolute h-full mt-1 text-green-400 w-full top-0 left-0 z-[0] flex align-center justify-center`}>{Math.round(file.progress)}%</span>
           </li>
         ))}

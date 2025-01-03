@@ -1,14 +1,26 @@
+import fs from 'node:fs';
 import path from 'node:path';
 
-export const getOutputPath = (filePath: string) => {
-    const { name, ext } = path.parse(filePath);
-    const dir = getOutputDir(filePath);
-    return path.join(dir, `${name}${ext}`);
-}
+const defaultPrefix = '_compressed';
 
-export const getOutputDir = (filePath: string) => {
-    const prefix = '_compressed';
-    const { dir } = path.parse(filePath);
-    const parentDir = path.dirname(dir);
-    return path.join(parentDir, `${path.basename(dir)}${prefix}`);
-}
+export const getOutputPath = (filePath: string, base: string, prefix: string = defaultPrefix) => {
+    const { dir, base: fileName } = path.parse(filePath);
+    const relativeDir = path.relative(base, dir);
+    const outputDir = path.join(base + prefix, relativeDir);
+    return path.join(outputDir, fileName);
+};
+
+
+export const getOutputDir = (baseDir: string) => {
+    const prefix = defaultPrefix;
+    const parentDir = path.dirname(baseDir);
+    return path.join(parentDir, `${path.basename(baseDir)}${prefix}`);
+};
+
+export const ensureOutputDir = (outPath: string) => {
+    const outDir = path.dirname(outPath)
+    
+    if (!fs.existsSync(outDir)) {
+        fs.mkdirSync(outDir, { recursive: true });
+    }
+};

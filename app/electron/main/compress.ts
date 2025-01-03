@@ -1,33 +1,43 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
-import ffprobeInstaller from '@ffprobe-installer/ffprobe';
-import { getVideoDurationInSeconds } from 'get-video-duration';
-import { getOutputDir } from './util/output';
+import { ensureOutputDir, getOutputDir } from './util/output';
 import { IMediaFile } from 'models/MediaFile';
 import { IPercentData } from 'models/PercentData';
+import { ISettings } from 'models/Settings';
+import deleteFileWithRetry from './util/deletefile';
+import { getVideoDuration } from './util/videoduration';
 
 const FILE_END = 'fileEnd';
 const COMPLETED = 'completed';
 
+interface IProgressData {
+    frames: number;
+    currentFps: number;
+    currentKbps: number;
+    targetSize: number;
+    timemark: string;
+    percent?: number | undefined;
+}
+
 async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
-    const ffprobePath =
-        process.env.NODE_ENV === 'production'
-            ? path.join(
-                process.resourcesPath,
-                'app.asar.unpacked',
-                'node_modules',
-                '@ffprobe-installer',
-                'win32-x64',
-                'ffprobe.exe'
-            )
-            : ffprobeInstaller.path;
+    const duration = await getVideoDuration(file.path);
 
-    ffmpeg.setFfprobePath(ffprobePath);
+    function onProgress(progress: IProgressData) {
+        let { percent } = progress;
+        let result = 0;
 
-    const duration = await getVideoDurationInSeconds(file.path, ffprobePath);
+        if (percent) {
+            result = percent > 100 ? 100 : percent;
+        } else if (progress.timemark && duration) {
+            const [hours, min, sec] = progress.timemark.split(':');
+            const currentTime = Number(sec) + Number(min) * 60 + Number(hours) * 360;
+            result = currentTime / duration * 100;
+        }
+        const payload: IPercentData = { filePath: file.path, percent: result };
+        event.sender.send('progress', payload);
+    }
 
     return new Promise((resolve, reject) => {
         let ffmpegPath;
@@ -47,11 +57,7 @@ async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
             ffmpeg.setFfmpegPath(ffmpegPath);
         }
 
-        const outputDir = getOutputDir(file.path);
-
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true });
-        }
+        ensureOutputDir(file.outputPath);
 
         ffmpeg(file.path)
             .format('avi')
@@ -62,31 +68,20 @@ async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
             .output(file.outputPath)
             .on('end', () => resolve(FILE_END))
             .on('error', (err) => reject(err.message))
-            .on('progress', (progress) => {
-                let { percent } = progress;
-                let result = 0;
-
-                if (percent) {
-                    result = percent > 100 ? 100 : percent;
-                } else if (progress.timemark && duration) {
-                    const [hours, min, sec] = progress.timemark.split(':');
-                    const currentTime = Number(sec) + Number(min) * 60 + Number(hours) * 360;
-                    result = currentTime / duration * 100;
-                }
-                const payload: IPercentData = { filePath: file.path, percent: result };
-                event.sender.send('progress', payload);
-            })
+            .on('progress', onProgress)
             .run();
     });
 }
 
-async function onCompress(event: IpcMainInvokeEvent, media: IMediaFile[]) {
+async function onCompress(event: IpcMainInvokeEvent, { media, settings }: { media: IMediaFile[], settings: ISettings }) {
     for (const file of media) {
         try {
             await onCompressFile(event, file) as string;
+            if (settings.deleteSrc) {
+                deleteFileWithRetry(file.path);
+            }
             event.sender.send(FILE_END, file.path);
         } catch (err) {
-            console.log(err);
             event.sender.send('log', err);
             let message = `An error occurred while compressing ${file.name}`;
             if (err instanceof Error) {

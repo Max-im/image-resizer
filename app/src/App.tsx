@@ -7,12 +7,18 @@ import Launch from '@/components/Launch';
 import Compressing from '@/components/Compressing';
 import ErrorMessage from '@/components/ErrorMessage';
 import { IMediaFile } from 'models/MediaFile';
+import { ISettings } from 'models/Settings';
 import './App.css';
+
+const initSettings: ISettings = {
+  deleteSrc: false
+};
 
 function App() {
   const [step, setStep] = useState(1);
   const [media, setMedia] = useState<IMediaFile[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [settings, setSettings] = useState<{deleteSrc: boolean}>(initSettings);
 
   const init = () => {
     setMedia([]);
@@ -37,6 +43,10 @@ function App() {
     setMedia(media);
     setStep(2);
   }
+  
+  const updateSettings = <T extends keyof ISettings>(key: T, value: ISettings[T]) => {
+    setSettings({...settings, [key]: value});
+  }
 
   return (
     <div className='App'>
@@ -46,10 +56,10 @@ function App() {
           <div className={`block grow-1`}>
             {step === 1 && <UploadMedia success={(saveMedia)} showError={showError} />}
             {step === 2 && <Launch success={() => toStep(3)} showError={showError} back={() => init()} media={media} />}
-            {step === 3 && <Compressing success={() => init()} showError={showError} back={() => toStep(2)} media={media} />}
+            {step === 3 && <Compressing success={() => init()} showError={showError} back={() => toStep(2)} media={media} settings={settings} />}
           </div>
         </div>
-        {step !== 3 && <Aside />}
+        {step !== 3 && <Aside settings={settings} updateSettings={updateSettings}/>}
       </main>
       <Footer />
       <ErrorMessage message={error} clearError={clearError} />

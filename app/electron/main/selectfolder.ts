@@ -50,7 +50,7 @@ async function openFolderSelection() {
         throw new Error('No supported media files found');
     }
 
-    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size, getOutputPath(file)));
+    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size, getOutputPath(file, dirPath)));
 }
 
 ipcMain.handle('selectfolder', openFolderSelection);

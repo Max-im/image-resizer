@@ -1,4 +1,4 @@
-import { IMediaFile } from '@/../models/MediaFile';
+import { IMediaFile } from 'models/MediaFile';
 import folder from '@/assets/folder.png';
 
 interface Props {
