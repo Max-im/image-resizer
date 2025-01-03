@@ -1,41 +1,51 @@
-# Media-compressor
-> Image and Video Size Reducer
+# Media Compressor
+> A simple image and video size reducer for efficient file compression.
 
-Media Compressor is a free, user-friendly application designed to simplify media file compression. Built with React and TypeScript, this lightweight tool helps you reduce file sizes without compromising quality. Whether you’re compressing videos, images, or audio files, Media Compressor offers a seamless experience with an intuitive interface and fast performance. Perfect for saving storage space, speeding up file transfers, and optimizing media for online use, this app is your go-to solution for hassle-free compression.
+## Table of Contents
+- [License](#license)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Features](#features)
+- [Roadmap](#roadmap)
+- [Contact](#contact)
 
-
-This Electron app is designed to help you reduce the size of your image and video files, making it easier to store and share them. The app uses the [Jimp](https://github.com/jimp-dev/jimp) library to compress images and [FFmpeg](https://www.ffmpeg.org/) to compress videos. Based on [electron react boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate.git)
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Installation
 
-To install and run the app, follow these steps:
+To install the necessary dependencies, run:
 
-1. Clone this repository to your local machine.
-2. Navigate to the project directory in your terminal.
-3. Install the necessary dependencies with the following command: `npm install`
-4. Start the app with the following command: `npm start`
+```bash
+npm install
+```
 
 ## Usage
+To start the application locally, use the following command:
 
-1. Open the app and select the folder with photos and videos you want to compress.
-2. Click the "Compress" button.
-3. Enjoy.
+```
+npm run dev
+```
 
-## License
+## Features
+- Image Compression: Reduce image file sizes without compromising quality.
+- Video Compression: Compress video files efficiently for faster uploads and sharing.
+- UI Components: User-friendly interface for smooth user experience.
+- Progress Tracking: Real-time progress for file processing.
 
-This project is licensed under the MIT License.
+ 
+## Contact
+For any inquiries or feedback, please contact the project maintainer:
+
+Name: Maksym Pozhydaiev
+Email: pogidaevmo@gmail.com
+LinkedIn: https://www.linkedin.com/in/max-im
+Feel free to reach out if you encounter any issues or need assistance! 
 
 
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] & printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-nvm use 20
-
-
-- [x] settings
-- [x] compressed file size
-- [x] icons
-- [x] cancel logic
-- [ ] readme
-- [ ] buttons layout
-- [ ] min width, min height
-- [ ] photo compressing
+## TODO
+- [ ] Implement photo compression functionality
+- [ ] file sharing
+- [ ] Refine button layout for better user experience
+- [ ] Implement minimum width and height constraints for images and videos
