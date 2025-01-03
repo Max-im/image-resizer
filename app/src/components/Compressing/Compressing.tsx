@@ -42,11 +42,11 @@ export default function Compressing({ showError, success, media, back, settings 
     });
   }
 
-  const onFileEnd = (e: Electron.IpcRendererEvent, filePath: string) => {
+  const onFileEnd = (e: Electron.IpcRendererEvent, {path, size}: {path: string, size: number}) => {
     setItems(prev => {
       return prev.map(item => {
-        if (item.path === filePath) {
-          return { ...item, done: true, success: true };
+        if (item.path === path) {
+          return { ...item, done: true, success: true, compressedSize: size};
         }
         return item;
       });
@@ -110,10 +110,10 @@ export default function Compressing({ showError, success, media, back, settings 
           >
             <span className="font-medium text-gray-800 relative z-10">{file.name}</span>
             <div className="text-gray-800 text-sm flex relative z-10 align-center">
-              <span className="mr-2">{formatSize(file.size)}</span>
-              {file.error && <img src={errorImg} alt='error' width="18" height="18" />}
-              {file.success && <img src={successImg} alt='success' width="18" height="18" />}
-
+              <span>{formatSize(file.size)}</span>
+              {file.compressedSize > 0 && <span className="text-green-400">{" -> "}{formatSize(file.compressedSize)}</span>}
+              {file.error && <img src={errorImg} className="ml-2" alt='error' width="18" height="18" />}
+              {file.success && <img src={successImg} className="ml-2" alt='success' width="18" height="18" />}
             </div>
             <span className={`absolute bg-green-600 ease-in-out h-full top-0 left-0 z-[0]`} style={{ width: file.progress + '%', transition: 'width 0.5s' }}></span>
             <span className={`absolute h-full mt-1 text-green-400 w-full top-0 left-0 z-[0] flex align-center justify-center`}>{Math.round(file.progress)}%</span>

@@ -14,8 +14,4 @@ export class MediaFile implements IMediaFile {
         this.name = path.basename(filePath);
         this.outputPath = output
     }
-
-    deleteSrcFile() {
-        fs.unlinkSync(this.path);
-    }
 }

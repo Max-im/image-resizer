@@ -1,11 +1,12 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
-import { ensureOutputDir, getOutputDir } from './util/output';
 import { IMediaFile } from 'models/MediaFile';
 import { IPercentData } from 'models/PercentData';
 import { ISettings } from 'models/Settings';
+import { ensureOutputDir } from './util/output';
 import deleteFileWithRetry from './util/deletefile';
 import { getVideoDuration } from './util/videoduration';
 
@@ -80,7 +81,8 @@ async function onCompress(event: IpcMainInvokeEvent, { media, settings }: { medi
             if (settings.deleteSrc) {
                 deleteFileWithRetry(file.path);
             }
-            event.sender.send(FILE_END, file.path);
+
+            event.sender.send(FILE_END, {path: file.path, size: fs.statSync(file.outputPath).size});
         } catch (err) {
             event.sender.send('log', err);
             let message = `An error occurred while compressing ${file.name}`;
