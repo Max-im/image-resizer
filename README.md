@@ -31,11 +31,11 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] & printf %s "${HOME}/.nvm" || pri
 nvm use 20
 
 
-- [ ] icons
-- [ ] readme
 - [x] settings
-- [ ] buttons layout
+- [x] compressed file size
+- [x] icons
 - [ ] cancel logic
+- [ ] readme
+- [ ] buttons layout
 - [ ] min width, min height
-- [ ] compressed size
 - [ ] photo compressing
