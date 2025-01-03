@@ -7,7 +7,21 @@
   },
   "files": [
     "dist-electron",
-    "dist"
+    "dist",
+    {
+      "from": "node_modules/ffmpeg-static",
+      "to": "node_modules/ffmpeg-static",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "node_modules/@ffprobe-installer",
+      "to": "node_modules/@ffprobe-installer",
+      "filter": ["**/*"]
+    }
+  ],
+  "asarUnpack": [
+    "node_modules/ffmpeg-static",
+    "node_modules/@ffprobe-installer"
   ],
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
@@ -36,6 +50,6 @@
   "publish": {
     "provider": "generic",
     "channel": "latest",
-    "url": "https://github.com/electron-vite/electron-vite-react/releases/download/v0.9.9/"
+    "url": "https://github.com/max-im/media-compressor/releases/download/v0.4.0/"
   }
 }

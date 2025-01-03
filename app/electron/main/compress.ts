@@ -1,7 +1,9 @@
 import fs from 'node:fs';
+import path from 'node:path';
+import { ipcMain, IpcMainInvokeEvent } from "electron";
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
-import { ipcMain, IpcMainInvokeEvent } from "electron";
+import ffprobeInstaller from '@ffprobe-installer/ffprobe';
 import { getVideoDurationInSeconds } from 'get-video-duration';
 import { getOutputDir } from './util/output';
 import { IMediaFile } from 'models/MediaFile';
@@ -11,16 +13,38 @@ const FILE_END = 'fileEnd';
 const COMPLETED = 'completed';
 
 async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
-    let duration: number | undefined;
-    try {
-        duration = await getVideoDurationInSeconds(file.path);
-    } catch (err) {
-        console.log(err);
-    }
+    const ffprobePath =
+        process.env.NODE_ENV === 'production'
+            ? path.join(
+                process.resourcesPath,
+                'app.asar.unpacked',
+                'node_modules',
+                '@ffprobe-installer',
+                'win32-x64',
+                'ffprobe.exe'
+            )
+            : ffprobeInstaller.path;
+
+    ffmpeg.setFfprobePath(ffprobePath);
+
+    const duration = await getVideoDurationInSeconds(file.path, ffprobePath);
 
     return new Promise((resolve, reject) => {
-        if (ffmpegStatic) {
-            ffmpeg.setFfmpegPath(ffmpegStatic);
+        let ffmpegPath;
+        if (process.env.NODE_ENV === 'production') {
+            ffmpegPath = path.join(
+                process.resourcesPath,
+                'app.asar.unpacked',
+                'node_modules',
+                'ffmpeg-static',
+                'ffmpeg.exe'
+            );
+        } else {
+            ffmpegPath = ffmpegStatic;
+        }
+
+        if (ffmpegPath) {
+            ffmpeg.setFfmpegPath(ffmpegPath);
         }
 
         const outputDir = getOutputDir(file.path);
@@ -43,7 +67,7 @@ async function onCompressFile(event: IpcMainInvokeEvent, file: IMediaFile) {
                 let result = 0;
 
                 if (percent) {
-                    result = percent > 1 ? 100 : percent * 100;
+                    result = percent > 100 ? 100 : percent;
                 } else if (progress.timemark && duration) {
                     const [hours, min, sec] = progress.timemark.split(':');
                     const currentTime = Number(sec) + Number(min) * 60 + Number(hours) * 360;
@@ -63,6 +87,7 @@ async function onCompress(event: IpcMainInvokeEvent, media: IMediaFile[]) {
             event.sender.send(FILE_END, file.path);
         } catch (err) {
             console.log(err);
+            event.sender.send('log', err);
             let message = `An error occurred while compressing ${file.name}`;
             if (err instanceof Error) {
                 message = err.message;

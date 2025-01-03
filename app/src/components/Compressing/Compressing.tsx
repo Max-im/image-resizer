@@ -17,8 +17,6 @@ export default function Compressing({ showError, success, media, back }: Props) 
   const [done, setDone] = useState(false);
   const [items, setItems] = useState(media.map(item => ({ ...item, progress: 0, compressedSize: 0, success: false, error: false, done: false })));
 
-  
-
   const startCompress = async () => {
     try {
       await window.ipcRenderer.invoke('compress', media);
@@ -57,6 +55,10 @@ export default function Compressing({ showError, success, media, back }: Props) 
     setDone(true);
   }
 
+  const onLog = (e: Electron.IpcRendererEvent, msg: any) => {
+    console.log(msg);
+  }
+
   const onShowError = (e: Electron.IpcRendererEvent, data: { filePath: string, message: string }) => {
     setItems(prev => {
       return prev.map(item => {
@@ -74,6 +76,7 @@ export default function Compressing({ showError, success, media, back }: Props) 
     window.ipcRenderer.on('fileEnd', onFileEnd);
     window.ipcRenderer.on('completed', onCompleted);
     window.ipcRenderer.on('fileError', onShowError);
+    window.ipcRenderer.on('log', onLog);
     startCompress();
 
     return () => {
@@ -81,6 +84,7 @@ export default function Compressing({ showError, success, media, back }: Props) 
       window.ipcRenderer.off('fileEnd', onFileEnd);
       window.ipcRenderer.off('completed', onCompleted);
       window.ipcRenderer.off('fileError', onShowError);
+      window.ipcRenderer.off('log', onLog);
     }
   }, []);
 
