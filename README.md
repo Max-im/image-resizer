@@ -15,9 +15,17 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Installation
 
+Make sure you have 20 Node.js version or heigher:
+```
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+nvm use 20
+```
+
 To install the necessary dependencies, run:
 
 ```bash
+cd app
 npm install
 ```
 
