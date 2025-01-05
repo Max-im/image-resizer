@@ -1,3 +1,4 @@
+import demo from '../../assets/demo.mp4';
 
 export default function Demo() {
   return (
@@ -5,7 +6,7 @@ export default function Demo() {
       <div className="container mx-auto text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">See How Simple It Is!</h2>
         <video className="mx-auto rounded-lg shadow-lg w-full" width="600" controls>
-          <source src="/demo-video.mp4" type="video/mp4" />
+          <source src={demo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
