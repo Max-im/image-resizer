@@ -1,15 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { dialog, ipcMain } from "electron";
-import { MediaFile } from '../../models/MediaFile';
+import { IMediaFile, MediaFile } from '../../models/MediaFile';
 import { getOutputPath } from './util/output';
-
-const supportedFiles = ['mp4','mov','avi','wmv','flv','webm', 'mkv'];
 
 function readDirFiles(folderPath: string): string[] {
     if (!fs.lstatSync(folderPath).isDirectory()) {
-      if (Array.isArray(folderPath)) return folderPath;
-      return [folderPath];
+        if (Array.isArray(folderPath)) return folderPath;
+        return [folderPath];
     }
     const files = fs.readdirSync(folderPath);
     const data = [];
@@ -18,8 +16,8 @@ function readDirFiles(folderPath: string): string[] {
         data.push(...readDirFiles(`${folderPath}/${fileName}`));
     }
     return data;
-  }
-  
+}
+
 
 async function openFolderSelection() {
     const data = await dialog.showOpenDialog({
@@ -34,15 +32,18 @@ async function openFolderSelection() {
 
     const dirPath = data.filePaths[0];
     const media = readDirFiles(dirPath);
-    if(!media.length) {
+    if (!media.length) {
         throw new Error('The folder is empty');
     }
 
-    const mediaFiles = [];
-    for (const item of media) {
-        const fileName = path.basename(item);
-        if (supportedFiles.includes(path.extname(fileName).toLowerCase().replace('.', ''))) {
-            mediaFiles.push(item);
+    const mediaFiles: IMediaFile[] = [];
+    for (const filePath of media) {
+        const fileName = path.basename(filePath);
+        const type = MediaFile.getType(fileName);
+        if (type) {
+            mediaFiles.push(
+                new MediaFile(filePath, fs.statSync(filePath).size, getOutputPath(filePath, dirPath), type)
+            );
         }
     }
 
@@ -50,7 +51,7 @@ async function openFolderSelection() {
         throw new Error('No supported media files found');
     }
 
-    return mediaFiles.map(file => new MediaFile(file, fs.statSync(file).size, getOutputPath(file, dirPath)));
+    return mediaFiles;
 }
 
 ipcMain.handle('selectfolder', openFolderSelection);

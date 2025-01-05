@@ -53,7 +53,6 @@ Feel free to reach out if you encounter any issues or need assistance!
 
 
 ## TODO
-- [ ] Implement photo compression functionality
-- [ ] file sharing
 - [ ] Refine button layout for better user experience
 - [ ] Implement minimum width and height constraints for images and videos
+- [ ] file sharing
