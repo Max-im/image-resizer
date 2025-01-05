@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "YourAppID",
+  "asar": true,
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist-electron",
+    "dist",
+    {
+      "from": "node_modules/ffmpeg-static",
+      "to": "node_modules/ffmpeg-static",
+      "filter": ["**/*"]
+    },
+    {
+      "from": "node_modules/@ffprobe-installer",
+      "to": "node_modules/@ffprobe-installer",
+      "filter": ["**/*"]
+    }
+  ],
+  "asarUnpack": [
+    "node_modules/ffmpeg-static",
+    "node_modules/@ffprobe-installer"
+  ],
+  "mac": {
+    "artifactName": "${productName}_${version}.${ext}",
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}_${version}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  },
+  "publish": {
+    "provider": "generic",
+    "channel": "latest",
+    "url": "https://github.com/max-im/media-compressor/releases/download/v0.4.0/"
+  }
+}

@@ -1,0 +1,8 @@
+.back {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 0.5rem 1rem;
+    &:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
