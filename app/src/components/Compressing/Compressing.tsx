@@ -6,6 +6,7 @@ import successImg from '@/assets/success.png';
 import { IMediaFile } from 'models/MediaFile';
 import { IPercentData } from 'models/PercentData';
 import { ISettings } from 'models/Settings';
+import { truncateFilename } from '@/utils/truncateName';
 
 interface Props {
   showError: (msg: string) => void;
@@ -102,13 +103,13 @@ export default function Compressing({ showError, success, media, back, settings 
         {done ? <BackBtn action={success} text="OK" /> : <BackBtn action={onCancel} text="Cancel" />}
       </div>
 
-      <ul className="p-0 mb-4 list-none">
+      <ul className="p-0 mb-4 list-none max-h-80 overflow-y-auto">
         {items.map((file, index) => (
           <li
             key={index}
             className="bg-white px-3 py-1 border border-gray-200 flex justify-between items-center relative mb-2"
           >
-            <span className="font-medium text-gray-800 relative z-10">{file.name}</span>
+            <span className="font-medium text-gray-800 relative z-10" title={file.name}>{truncateFilename(file.name, 40)}</span>
             <div className="text-gray-800 text-sm flex relative z-10 align-center">
               <span>{formatSize(file.size)}</span>
               {file.compressedSize > 0 && <span className="text-green-400">{" -> "}{formatSize(file.compressedSize)}</span>}

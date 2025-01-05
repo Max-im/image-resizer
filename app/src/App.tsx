@@ -49,7 +49,7 @@ function App() {
   }
 
   return (
-    <div className='App'>
+    <div className='App w-full h-full flex flex-col'>
       <Header />
       <main className="main operationbg flex nowrap w-full bg-gray-200">
         <div className="flex-[1.5] flex flex-col">

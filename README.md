@@ -51,8 +51,3 @@ Email: pogidaevmo@gmail.com
 LinkedIn: https://www.linkedin.com/in/max-im
 Feel free to reach out if you encounter any issues or need assistance! 
 
-
-## TODO
-- [ ] Refine button layout for better user experience
-- [ ] Implement minimum width and height constraints for images and videos
-- [ ] file sharing

@@ -25,6 +25,11 @@ export default function UploadMedia({ showError, success }: Props) {
   return (
     <>
       <h3>Upload Media</h3>
+
+      <p className="text-sm mb-4">
+        Select a folder containing media files to begin compression. This will process all supported media formats in the selected folder.
+      </p>
+      
       <button className="bg-black hover:bg-gray-700 text-white border-none text-base py-2 px-3 cursor-pointer flex items-center" onClick={handleUpload}>
         Select Folder
         <img src={folder} alt="icon" width="18" height="18" className="ml-3" />
