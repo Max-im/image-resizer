@@ -1,0 +1,1 @@
+export const APP_URL = 'https://drive.usercontent.google.com/download?id=13YQPcessZ7G9XmtNhuKd8SHAUYsIdInW&export=download';

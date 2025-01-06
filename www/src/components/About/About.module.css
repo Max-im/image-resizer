@@ -1,11 +1,11 @@
 .blob {
   transform: scale(10);
-  transition: all 2s ease-in-out;
+  transition: all 0.5s ease-in-out;
   animation-fill-mode: forwards;
 }
 
 .blob_active {
-  animation: blobAnimation 2s ease-in-out;
+  animation: blobAnimation 1s ease-in-out;
   animation-fill-mode: forwards;
 }
 
@@ -22,8 +22,8 @@
   top: 10%;
   left: 20%;
   width: 50%;
-  animation: characterAnimation 2s ease-in-out;
-  animation-delay: 2s;
+  animation: characterAnimation 1s ease-in-out;
+  animation-delay: 1s;
   animation-fill-mode: forwards;
 }
 
